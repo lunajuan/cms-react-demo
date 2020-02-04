@@ -43,7 +43,7 @@ const Container = props => {
       <Content>
         {/* header */}
         <Header>
-          <h1 className="heading">SandBox</h1>
+          <h1 className="heading">Draft.js with Formik</h1>
         </Header>
 
         {/* app sample goes in here */}
