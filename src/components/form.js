@@ -33,11 +33,14 @@ const FormContainer = styled.form`
 `;
 
 // pass in id
-const form = () => {
+const form = props => {
+  const { saveProduct } = props;
+
   return (
     <Formik
       initialValues={{ title: '', description: '' }}
       onSubmit={values => {
+        saveProduct(values);
         alert(JSON.stringify(values, null, 2));
       }}
     >
