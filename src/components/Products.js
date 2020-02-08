@@ -23,6 +23,7 @@ const List = styled.div`
 
 const Products = props => {
   const { products } = props;
+  console.log('products', products);
   const hasProducts = products && products.length > 0;
 
   return (
@@ -37,7 +38,7 @@ const Products = props => {
       <List>
         <h2 className="heading">Products</h2>
         {hasProducts ? (
-          products.map(product => <li>{product}.title</li>)
+          products.map(product => <li key={product.title}>{product.title}</li>)
         ) : (
           <div className="message">
             <p>
