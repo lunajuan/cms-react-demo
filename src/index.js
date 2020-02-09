@@ -67,7 +67,7 @@ const App = () => {
             </Route>
             <Route>
               {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
-              <Products products={history[historyPosition]} />
+              <Products products={history[historyPosition] || []} />
             </Route>
           </Switch>
         </Router>
