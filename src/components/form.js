@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import Button from './Button';
 
@@ -33,15 +34,16 @@ const FormContainer = styled.form`
 `;
 
 // pass in id
-const form = props => {
-  const { saveProduct } = props;
+const Form = props => {
+  const { addProduct } = props;
+  const browserHistory = useHistory();
 
   return (
     <Formik
       initialValues={{ title: '', description: '' }}
       onSubmit={values => {
-        saveProduct(values);
-        alert(JSON.stringify(values, null, 2));
+        addProduct(values);
+        browserHistory.push('/');
       }}
     >
       {props => {
@@ -84,4 +86,4 @@ const form = props => {
   );
 };
 
-export default form;
+export default Form;

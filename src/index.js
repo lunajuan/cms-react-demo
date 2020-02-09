@@ -6,7 +6,7 @@ import theme from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
 import Container from './components/Container';
 import Products from './components/Products';
-import Form from './components/form';
+import Form from './components/Form';
 import Button from './components/Button';
 
 const App = () => {
@@ -63,7 +63,7 @@ const App = () => {
               <NavLink exact to="/">
                 All Products
               </NavLink>
-              <Form saveProduct={addProduct} />
+              <Form addProduct={addProduct} />
             </Route>
             <Route>
               {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
