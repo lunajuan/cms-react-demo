@@ -14,7 +14,6 @@ const Background = styled.div`
 const Content = styled.div`
   background-color: white;
   padding: ${props => props.theme.spacing['4']};
-  border: 1px solid ${props => props.theme.colors.red_300};
   width: 100%;
   max-width: 600px;
   height: 100%;
