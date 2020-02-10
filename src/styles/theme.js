@@ -1,6 +1,9 @@
 import colors from './colors';
 import spacing from './spacing';
 import { fontSize, fontWeight, fontFamily } from './font';
+// import shodows
+import boxShadow from './box-shadow';
+// import radius
 
 export default {
   spacing,
@@ -24,4 +27,12 @@ export default {
     relaxed: '1.625',
     loose: '2',
   },
+  radius: {
+    sm: '0.2rem',
+    default: '0.4rem',
+    md: '0.6rem',
+    lg: '0.8rem',
+    full: '9999px',
+  },
+  boxShadow,
 };
