@@ -12,6 +12,7 @@ const Background = styled.div`
 
 const Content = styled.div`
   background-color: white;
+  box-shadow: ${props => props.theme.boxShadow.default};
   padding: ${props => props.theme.spacing['4']};
   width: 100%;
   max-width: 600px;
