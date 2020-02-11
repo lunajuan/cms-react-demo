@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     margin: 0;
     font-size: ${props => props.theme.fontSize.base};
-    line-height: 2;
+    line-height: ${props => props.theme.lineHeight.relaxed};
   }
   a {
     text-decoration: none;
