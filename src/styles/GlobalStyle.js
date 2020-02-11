@@ -2,9 +2,13 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   html {
+    background-color: ${props => props.theme.colors.indigo_050};
+    border-bottom: 1px solid ${props => props.theme.colors.indigo_200};
+    border-top: 1px solid ${props => props.theme.colors.indigo_200};
     box-sizing: border-box;
     font-size: 10px;
     font-family: ${props => props.theme.fontFamily.sans};
+    box-shadow: ${props => props.theme.boxShadow.default};
   }
   *, *:before, *:after {
     box-sizing: inherit;
