@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from './Button';
+// import List from './List';
 
 const Section = styled.div`
   .controls {
@@ -9,8 +10,7 @@ const Section = styled.div`
   }
 `;
 
-const List = styled.div`
-  background-color: ${props => props.theme.colors.yellow_050};
+const ProductsSection = styled.div`
   small {
     display: block;
   }
@@ -18,6 +18,47 @@ const List = styled.div`
   .heading,
   .message {
     text-align: center;
+  }
+`;
+
+const List = styled.ul`
+  padding: 0;
+  list-style-type: none;
+`;
+
+const Item = styled.li`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  box-shadow: ${props => props.theme.boxShadow.default};
+  padding: ${props => props.theme.spacing['3']} ${props => props.theme.spacing['4']};
+
+  h3 {
+    margin: 0 0 ${props => props.theme.spacing['2']};
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .placeholder-image {
+    background-color: ${props => props.theme.colors.grey_200};
+    width: 150px;
+    height: 150px;
+  }
+
+  .text {
+    padding: ${props => props.theme.spacing['3']};
+  }
+
+  .controls {
+    text-align: right;
+    grid-column-start: 2;
+  }
+
+  .control {
+    border-radius: ${props => props.theme.radius.full};
+    font-size: ${props => props.theme.fontSize.sm};
+    margin: 0 ${props => props.theme.spacing['1']};
   }
 `;
 
@@ -35,10 +76,30 @@ const Products = props => {
       </div>
 
       {/* list of existing products */}
-      <List>
+      <ProductsSection>
         <h2 className="heading">Products</h2>
+
         {hasProducts ? (
-          products.map(product => <li key={product.title}>{product.title}</li>)
+          <List>
+            {products.map(product => {
+              const { title, description } = product;
+              return (
+                <Item key={title}>
+                  <div className="placeholder-image" />
+                  <div className="text">
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                  <div className="controls">
+                    <Button className="control">Edit</Button>
+                    <Button className="control" danger>
+                      Delete
+                    </Button>
+                  </div>
+                </Item>
+              );
+            })}
+          </List>
         ) : (
           <div className="message">
             <p>
@@ -46,7 +107,7 @@ const Products = props => {
             </p>
           </div>
         )}
-      </List>
+      </ProductsSection>
     </Section>
   );
 };

@@ -12,7 +12,14 @@ import Button from './components/Button';
 const App = () => {
   // use history to store products at different points in time to be able to
   // undo.
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState([
+    [
+      {
+        title: 'Cool Shirt',
+        description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+      },
+    ],
+  ]);
   const [historyPosition, setHistoryProsition] = useState(0);
   const [canUndo, setCanUndo] = useState(false);
 
@@ -39,6 +46,10 @@ const App = () => {
     },
     [history, historyPosition]
   );
+
+  // const removeProduct = (useCallback(product => {
+
+  // }));
 
   const undo = useCallback(() => {
     // if we have to check if there is even any history to undo or if we can
