@@ -63,8 +63,7 @@ const Item = styled.li`
 `;
 
 const Products = props => {
-  const { products } = props;
-  console.log('products', products);
+  const { products, removeProduct } = props;
   const hasProducts = products && products.length > 0;
 
   return (
@@ -81,7 +80,7 @@ const Products = props => {
 
         {hasProducts ? (
           <List>
-            {products.map(product => {
+            {products.map((product, i) => {
               const { title, description } = product;
               return (
                 <Item key={title}>
@@ -92,7 +91,7 @@ const Products = props => {
                   </div>
                   <div className="controls">
                     <Button className="control">Edit</Button>
-                    <Button className="control" danger>
+                    <Button className="control" danger onClick={() => removeProduct(i)}>
                       Delete
                     </Button>
                   </div>

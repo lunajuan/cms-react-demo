@@ -8,6 +8,7 @@ import Container from './components/Container';
 import Products from './components/Products';
 import Form from './components/Form';
 import Button from './components/Button';
+import { removeIndex } from './lib';
 
 const App = () => {
   // use history to store products at different points in time to be able to
@@ -16,6 +17,10 @@ const App = () => {
     [
       {
         title: 'Cool Shirt',
+        description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
+      },
+      {
+        title: 'Another Cool Shirt',
         description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
       },
     ],
@@ -47,9 +52,23 @@ const App = () => {
     [history, historyPosition]
   );
 
-  // const removeProduct = (useCallback(product => {
+  const removeProduct = useCallback(
+    index => {
+      const newHistory = history.slice(0, historyPosition + 1);
+      // We need the most current list of products that we will gather with out
+      // new product we want to add
+      const currentListOfProducts = newHistory[newHistory.length - 1] || [];
+      if (!currentListOfProducts.length) return;
 
-  // }));
+      const updatedProducts = removeIndex(currentListOfProducts, index);
+      newHistory.push(updatedProducts);
+
+      setHistory(newHistory);
+      setHistoryProsition(newHistory.length - 1);
+      setCanUndo(true);
+    },
+    [history, historyPosition]
+  );
 
   const undo = useCallback(() => {
     // if we have to check if there is even any history to undo or if we can
@@ -63,6 +82,8 @@ const App = () => {
     setHistoryProsition(historyPosition - 1);
     setCanUndo(false);
   }, [canUndo, history, historyPosition]);
+
+  console.log('history', history);
 
   return (
     <ThemeProvider theme={theme}>
@@ -78,7 +99,7 @@ const App = () => {
             </Route>
             <Route>
               {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
-              <Products products={history[historyPosition] || []} />
+              <Products products={history[historyPosition] || []} removeProduct={removeProduct} />
             </Route>
           </Switch>
         </Router>
