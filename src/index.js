@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, NavLink, useLocation } from 're
 import theme from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
 import Container from './components/Container';
+import NotFound from './components/NotFound';
 import Products from './components/Products';
 import Form from './components/Form';
 import EditForm from './components/EdifForm';
@@ -105,6 +106,10 @@ const App = () => {
         <Router>
           <Nav />
           <Switch>
+            <Route exact path="/">
+              {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
+              <Products products={history[historyPosition] || []} removeProduct={removeProduct} />
+            </Route>
             <Route path="/product/new">
               <Form addProduct={addProduct} />
             </Route>
@@ -112,8 +117,7 @@ const App = () => {
               <EditForm products={history[historyPosition]} />
             </Route>
             <Route>
-              {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
-              <Products products={history[historyPosition] || []} removeProduct={removeProduct} />
+              <NotFound />
             </Route>
           </Switch>
         </Router>
