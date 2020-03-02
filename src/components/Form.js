@@ -35,54 +35,69 @@ const FormContainer = styled.form`
 
 // pass in id
 const Form = props => {
-  const { addProduct } = props;
+  const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
 
   return (
-    <Formik
-      initialValues={{ title: '', description: '' }}
-      onSubmit={values => {
-        addProduct(values);
-        browserHistory.push('/');
-      }}
-    >
-      {props => {
-        const {
-          values: { title, description },
-          errors,
-          handleSubmit,
-          handleChange,
-          handleBlur,
-        } = props;
-        return (
-          <FormContainer onSubmit={handleSubmit}>
-            <label htmlFor="title" className="field-group">
-              <span className="field-label">Title</span>
-              <input
-                type="text"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={title}
-                name="title"
-              />
-              {errors.title && <div id="feedback">{errors.title}</div>}
-            </label>
+    <>
+      <h1>{product ? 'Edit' : 'New'}</h1>
 
-            <label htmlFor="description" className="field-group">
-              <span className="field-label">Description</span>
-              <textarea
-                onChange={handleChange}
-                value={description}
-                name="description"
-                className="textarea"
-              />
-            </label>
+      <Formik
+        initialValues={{
+          title: product ? product.title : '',
+          description: product ? product.description : '',
+        }}
+        onSubmit={values => {
+          const id = product ? product.id : (+new Date()).toString();
+          const allValues = { id, ...values };
 
-            <Button type="submit">Submit</Button>
-          </FormContainer>
-        );
-      }}
-    </Formik>
+          if (product) {
+            editProduct(allValues);
+          } else {
+            addProduct(allValues);
+          }
+
+          browserHistory.push('/');
+        }}
+      >
+        {props => {
+          const {
+            values: { title, description },
+            errors,
+            handleSubmit,
+            handleChange,
+            handleBlur,
+          } = props;
+          return (
+            <FormContainer onSubmit={handleSubmit}>
+              <label htmlFor="title" className="field-group">
+                <span className="field-label">Title</span>
+                <input
+                  type="text"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={title}
+                  name="title"
+                />
+                {errors.title && <div id="feedback">{errors.title}</div>}
+              </label>
+
+              <label htmlFor="description" className="field-group">
+                <span className="field-label">Description</span>
+                <textarea
+                  onChange={handleChange}
+                  value={description}
+                  name="description"
+                  className="textarea"
+                />
+              </label>
+
+              <Button type="submit">Submit</Button>
+            </FormContainer>
+          );
+        }}
+      </Formik>
+    </>
   );
 };
 

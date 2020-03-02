@@ -1,15 +1,14 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import Form from './Form';
+import NotFound from './NotFound';
 
-const EdifForm = () => {
+const EdifForm = props => {
   const { id } = useParams();
+  const { products, findOneAndUpdate } = props;
+  const product = products.find(({ id: productID }) => productID === id);
 
-  return (
-    <div>
-      <h1>Edit Form Placeholder component</h1>
-      {id ? <p style={{ color: 'red' }}>Id: {id}</p> : <p>NO ID so we will need to 404!</p>}
-    </div>
-  );
+  return <>{product ? <Form product={product} editProduct={findOneAndUpdate} /> : <NotFound />}</>;
 };
 
 export default EdifForm;

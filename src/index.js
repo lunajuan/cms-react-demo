@@ -30,12 +30,12 @@ const App = () => {
   const [history, setHistory] = useState([
     [
       {
-        id: 'cool-shirt',
+        id: '1583165416208',
         title: 'Cool Shirt',
         description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
       },
       {
-        id: 'awesome-shirt',
+        id: '1583165457506',
         title: 'Awesome Shirt',
         description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
       },
@@ -86,6 +86,27 @@ const App = () => {
     [history, historyPosition]
   );
 
+  const findOneAndUpdate = useCallback(
+    product => {
+      const { id } = product;
+      const newHistory = history.slice(0, historyPosition + 1);
+      const productsToUpdate = [...newHistory[newHistory.length - 1]];
+
+      // find the index of the product we are trying to edit
+      const productIndex = productsToUpdate.findIndex(({ id: productId }) => productId === id);
+      if (productIndex === -1) return;
+
+      productsToUpdate[productIndex] = product;
+
+      newHistory.push(productsToUpdate);
+
+      setHistory(newHistory);
+      setHistoryProsition(newHistory.length - 1);
+      setCanUndo(true);
+    },
+    [history, historyPosition]
+  );
+
   const undo = useCallback(() => {
     // if we have to check if there is even any history to undo or if we can
     // undo at all.
@@ -114,7 +135,7 @@ const App = () => {
               <Form addProduct={addProduct} />
             </Route>
             <Route path="/product/edit/:id">
-              <EditForm products={history[historyPosition]} />
+              <EditForm products={history[historyPosition]} findOneAndUpdate={findOneAndUpdate} />
             </Route>
             <Route>
               <NotFound />
