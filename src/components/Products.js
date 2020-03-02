@@ -69,7 +69,7 @@ const Products = props => {
   return (
     <Section>
       <div className="controls">
-        <Link to="/form">
+        <Link to="/product/new">
           <Button type="button">Add Product</Button>
         </Link>
       </div>
@@ -81,7 +81,7 @@ const Products = props => {
         {hasProducts ? (
           <List>
             {products.map((product, i) => {
-              const { title, description } = product;
+              const { title, description, id } = product;
               return (
                 <Item key={title}>
                   <div className="placeholder-image" />
@@ -90,7 +90,9 @@ const Products = props => {
                     <p>{description}</p>
                   </div>
                   <div className="controls">
-                    <Button className="control">Edit</Button>
+                    <Link to={`/product/edit/${id}`}>
+                      <Button className="control">Edit</Button>
+                    </Link>
                     <Button className="control" danger onClick={() => removeProduct(i)}>
                       Delete
                     </Button>

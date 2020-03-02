@@ -1,14 +1,27 @@
 import React, { useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
-import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, NavLink, useLocation } from 'react-router-dom';
 import theme from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
 import Container from './components/Container';
 import Products from './components/Products';
 import Form from './components/Form';
+import EditForm from './components/EdifForm';
 import Button from './components/Button';
 import { removeIndex } from './lib';
+
+const Nav = () => {
+  const { pathname } = useLocation();
+
+  if (pathname === '/') return null;
+
+  return (
+    <NavLink exact to="/">
+      All Products
+    </NavLink>
+  );
+};
 
 const App = () => {
   // use history to store products at different points in time to be able to
@@ -16,11 +29,13 @@ const App = () => {
   const [history, setHistory] = useState([
     [
       {
+        id: 'cool-shirt',
         title: 'Cool Shirt',
         description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
       },
       {
-        title: 'Another Cool Shirt',
+        id: 'awesome-shirt',
+        title: 'Awesome Shirt',
         description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry.`,
       },
     ],
@@ -83,19 +98,18 @@ const App = () => {
     setCanUndo(false);
   }, [canUndo, history, historyPosition]);
 
-  console.log('history', history);
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Container>
         <Router>
+          <Nav />
           <Switch>
-            <Route path="/form">
-              <NavLink exact to="/">
-                All Products
-              </NavLink>
+            <Route path="/product/new">
               <Form addProduct={addProduct} />
+            </Route>
+            <Route path="/product/edit/:id">
+              <EditForm products={history[historyPosition]} />
             </Route>
             <Route>
               {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
