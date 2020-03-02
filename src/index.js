@@ -1,7 +1,8 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router, Switch, Route, NavLink, useLocation } from 'react-router-dom';
+import sampleData from './sample-data';
 import useHistory from './hooks/useHistory';
 import theme from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
@@ -27,6 +28,7 @@ const Nav = () => {
 
 const App = () => {
   const { getCurrentHistory: getCurrentProducts, updateHistory, canUndo, undo } = useHistory();
+  const [isSampleLoaded, setIsSampleLoaded] = useState(false);
 
   const addProduct = useCallback(
     product => {
@@ -59,6 +61,12 @@ const App = () => {
     },
     [getCurrentProducts, updateHistory]
   );
+
+  const loadSampleData = useCallback(() => {
+    updateHistory([...sampleData]);
+    setIsSampleLoaded(true);
+  }, [updateHistory]);
+
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
@@ -67,6 +75,9 @@ const App = () => {
           <Nav />
           <Switch>
             <Route exact path="/">
+              <Button onClick={loadSampleData}>
+                {isSampleLoaded ? 'Re-load Data' : 'Load Sample Data'}
+              </Button>
               {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
               <Products products={getCurrentProducts([])} removeProduct={removeProduct} />
             </Route>
