@@ -5,10 +5,10 @@ import NotFound from './NotFound';
 
 const EdifForm = props => {
   const { id } = useParams();
-  const { products, findOneAndUpdate } = props;
+  const { products, editProduct } = props;
   const product = products.find(({ id: productID }) => productID === id);
 
-  return <>{product ? <Form product={product} editProduct={findOneAndUpdate} /> : <NotFound />}</>;
+  return <>{product ? <Form product={product} editProduct={editProduct} /> : <NotFound />}</>;
 };
 
 export default EdifForm;
