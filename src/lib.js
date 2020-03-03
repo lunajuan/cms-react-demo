@@ -8,3 +8,12 @@ export const removeIndex = (array, index) => {
 
   return newArray;
 };
+
+export const trim = (string, maxLength, more = '...') => {
+  if (string.length > maxLength) {
+    const trimmedString = string.substring(0, maxLength + 1);
+    return `${trimmedString}${more}`;
+  }
+
+  return string;
+};

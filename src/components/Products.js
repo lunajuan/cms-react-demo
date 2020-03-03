@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from './Button';
+import { trim } from '../lib';
 // import List from './List';
 
 const Section = styled.div`
@@ -110,7 +111,7 @@ const Products = props => {
                   </div>
                   <div className="text">
                     <h3>{title}</h3>
-                    <p>{description}</p>
+                    <p>{trim(description, 150)}</p>
                   </div>
                   <div className="controls">
                     <Link to={`/product/edit/${id}`}>
