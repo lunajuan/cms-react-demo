@@ -27,8 +27,9 @@ const Nav = () => {
 };
 
 const App = () => {
-  const { getCurrentHistory: getCurrentProducts, updateHistory, canUndo, undo } = useHistory();
-  const [isSampleLoaded, setIsSampleLoaded] = useState(false);
+  const { getCurrentHistory: getCurrentProducts, updateHistory, canUndo, undo } = useHistory([
+    [...sampleData],
+  ]);
 
   const addProduct = useCallback(
     product => {
@@ -62,11 +63,6 @@ const App = () => {
     [getCurrentProducts, updateHistory]
   );
 
-  const loadSampleData = useCallback(() => {
-    updateHistory([...sampleData]);
-    setIsSampleLoaded(true);
-  }, [updateHistory]);
-
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
@@ -75,9 +71,6 @@ const App = () => {
           <Nav />
           <Switch>
             <Route exact path="/">
-              <Button onClick={loadSampleData}>
-                {isSampleLoaded ? 'Re-load Data' : 'Load Sample Data'}
-              </Button>
               {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
               <Products products={getCurrentProducts([])} removeProduct={removeProduct} />
             </Route>
