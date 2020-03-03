@@ -89,7 +89,7 @@ const Products = props => {
             {products.map((product, i) => {
               const { id, title, description, image_url, image_author, image_author_url } = product;
               return (
-                <Item key={title}>
+                <Item key={id}>
                   <div>
                     <img
                       className="image"
