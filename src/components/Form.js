@@ -2,7 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
+import { EditorState } from 'draft-js';
 import Button from './Button';
+import RichTextArea from './RichTextArea';
 
 const FormContainer = styled.form`
   input,
@@ -16,11 +18,11 @@ const FormContainer = styled.form`
     display: block;
     width: 100%;
     padding: ${props => props.theme.spacing['2']} ${props => props.theme.spacing['3']};
-  }
 
-  textarea {
-    resize: none;
-    min-height: 200px;
+    &:focus {
+      outline: none;
+      box-shadow: ${props => props.theme.boxShadow.outline};
+    }
   }
 
   .field-group {
@@ -45,7 +47,7 @@ const Form = props => {
       <Formik
         initialValues={{
           title: product ? product.title : '',
-          description: product ? product.description : '',
+          description: product ? product.description : EditorState.createEmpty(),
         }}
         onSubmit={values => {
           const id = product ? product.id : (+new Date()).toString();
@@ -67,6 +69,8 @@ const Form = props => {
             handleSubmit,
             handleChange,
             handleBlur,
+            setFieldValue,
+            setFieldTouched,
           } = props;
           return (
             <FormContainer onSubmit={handleSubmit}>
@@ -84,14 +88,13 @@ const Form = props => {
 
               <label htmlFor="description" className="field-group">
                 <span className="field-label">Description</span>
-                <textarea
-                  onChange={handleChange}
-                  value={description}
+                <RichTextArea
                   name="description"
-                  className="textarea"
+                  value={description}
+                  setFieldValue={setFieldValue}
+                  setFieldToched={setFieldTouched}
                 />
               </label>
-
               <Button type="submit">Submit</Button>
             </FormContainer>
           );
