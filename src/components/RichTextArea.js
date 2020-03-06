@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Editor, EditorState, RichUtils, Modifier } from 'draft-js';
 import styled from 'styled-components';
+import CharLimit from './CharLimit';
 import colors from '../styles/colors';
 
 const EditorWrapper = styled.div`
@@ -185,17 +186,17 @@ const RichTextArea = props => {
   const [isFocused, setFocus] = useState(false);
 
   const initialCharsRemaining = editorContentLength(editorState);
-  const [remainingChars, setRemainingChars] = useState(initialCharsRemaining - charsLimit);
+  const [remainingChars, setRemainingChars] = useState(charsLimit - initialCharsRemaining);
 
   // onChange editor handler. This is where we update the formik field value
   // with the most up-to-date editorState. We can also update state of
   // remainingChars if applicable.
   const onChange = useCallback(
     updatedEditorState => {
-      if (charsLimit) setRemainingChars(editorContentLength(updatedEditorState) - remainingChars);
+      if (charsLimit) setRemainingChars(charsLimit - editorContentLength(updatedEditorState));
       setFieldValue(name, updatedEditorState);
     },
-    [charsLimit, remainingChars, setFieldValue, name]
+    [charsLimit, setFieldValue, name]
   );
 
   // https://draftjs.org/docs/quickstart-rich-styling/#richutils-and-key-commands
@@ -275,6 +276,7 @@ const RichTextArea = props => {
         onBlur={onBlur}
         stripPastedStyles
       />
+      {charsLimit ? <CharLimit charsLimit={charsLimit} remainingChars={remainingChars} /> : null}
     </EditorWrapper>
   );
 };

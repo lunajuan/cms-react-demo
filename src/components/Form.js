@@ -93,6 +93,7 @@ const Form = props => {
                   value={description}
                   setFieldValue={setFieldValue}
                   setFieldToched={setFieldTouched}
+                  charsLimit={500}
                 />
               </label>
               <Button type="submit">Submit</Button>
