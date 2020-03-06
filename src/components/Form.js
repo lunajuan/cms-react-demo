@@ -2,9 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
-import { EditorState } from 'draft-js';
+import { EditorState, ContentState } from 'draft-js';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
+
+const createEditorStateFromContent = content => {
+  if (typeof content === 'string')
+    return EditorState.createWithContent(ContentState.createFromText(content));
+};
 
 const FormContainer = styled.form`
   input,
@@ -47,7 +52,9 @@ const Form = props => {
       <Formik
         initialValues={{
           title: product ? product.title : '',
-          description: product ? product.description : EditorState.createEmpty(),
+          description: product
+            ? createEditorStateFromContent(product.description)
+            : EditorState.createEmpty(),
         }}
         onSubmit={values => {
           const id = product ? product.id : (+new Date()).toString();
