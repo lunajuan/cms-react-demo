@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PinkHighlighter from '../styles/PinkHighlighter';
 
 const Counter = styled.div`
   display: flex;
@@ -11,10 +12,6 @@ const Counter = styled.div`
   .message {
     padding: 0 ${props => props.theme.spacing['2']};
   }
-
-  .is-over-limit {
-    background-color: ${props => props.theme.colors.red_200};
-  }
 `;
 
 const CharLimit = props => {
@@ -22,13 +19,14 @@ const CharLimit = props => {
   if (!charsLimit) return null;
 
   const hitLimit = remainingChars < 0;
-  const message = hitLimit ? 'Over Limit' : 'Charcters Left';
 
   return (
     <Counter>
-      <span className={`message ${hitLimit ? ' is-over-limit' : ''}`}>
-        {message}: {remainingChars}
-      </span>
+      {hitLimit ? (
+        <PinkHighlighter className="message">Over Limit: {remainingChars}</PinkHighlighter>
+      ) : (
+        <span className="message">Remaining Characters: {remainingChars}</span>
+      )}
     </Counter>
   );
 };
