@@ -6,6 +6,7 @@ import sampleData from './sample-data';
 import useHistory from './hooks/useHistory';
 import theme from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
+import { FlashProvider } from './components/FlashContext';
 import Container from './components/Container';
 import NotFound from './components/NotFound';
 import Products from './components/Products';
@@ -68,22 +69,24 @@ const App = () => {
       <GlobalStyle />
       <Container>
         <Router>
-          <Nav />
-          <Switch>
-            <Route exact path="/">
-              {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
-              <Products products={getCurrentProducts([])} removeProduct={removeProduct} />
-            </Route>
-            <Route path="/product/new">
-              <Form addProduct={addProduct} />
-            </Route>
-            <Route path="/product/edit/:id">
-              <EditForm products={getCurrentProducts([])} editProduct={editProduct} />
-            </Route>
-            <Route>
-              <NotFound />
-            </Route>
-          </Switch>
+          <FlashProvider>
+            <Nav />
+            <Switch>
+              <Route exact path="/">
+                {canUndo ? <Button onClick={() => undo()}>Undo</Button> : null}
+                <Products products={getCurrentProducts([])} removeProduct={removeProduct} />
+              </Route>
+              <Route path="/product/new">
+                <Form addProduct={addProduct} />
+              </Route>
+              <Route path="/product/edit/:id">
+                <EditForm products={getCurrentProducts([])} editProduct={editProduct} />
+              </Route>
+              <Route>
+                <NotFound />
+              </Route>
+            </Switch>
+          </FlashProvider>
         </Router>
       </Container>
     </ThemeProvider>
