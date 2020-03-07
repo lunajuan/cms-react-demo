@@ -2,8 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { stateToHTML } from 'draft-js-export-html';
 import Button from './Button';
-import { trim } from '../lib';
 // import List from './List';
 
 const Section = styled.div`
@@ -111,7 +111,18 @@ const Products = props => {
                   </div>
                   <div className="text">
                     <h3>{title}</h3>
-                    <p>{trim(description, 150)}</p>
+                    {typeof description === 'string' ? (
+                      <p>{description}</p>
+                    ) : (
+                      // if we didn't trust the html string then we would
+                      // sanitize here or before saving the data.
+                      <div
+                        // eslint-disable-next-line react/no-danger
+                        dangerouslySetInnerHTML={{
+                          __html: stateToHTML(description.getCurrentContent()),
+                        }}
+                      />
+                    )}
                   </div>
                   <div className="controls">
                     <Link to={`/product/edit/${id}`}>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
-import { EditorState, ContentState } from 'draft-js';
+import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
 
@@ -57,8 +57,9 @@ const Form = props => {
             : EditorState.createEmpty(),
         }}
         onSubmit={values => {
+          const { title, description } = values;
           const id = product ? product.id : (+new Date()).toString();
-          const allValues = { id, ...values };
+          const allValues = { id, title, description };
 
           if (product) {
             editProduct(allValues);
