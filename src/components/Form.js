@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
-import { EditorState, ContentState, convertToRaw } from 'draft-js';
+import { EditorState, ContentState } from 'draft-js';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
 
