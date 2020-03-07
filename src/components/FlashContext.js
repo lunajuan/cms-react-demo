@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const FlashContext = React.createContext();
@@ -18,8 +18,18 @@ export const FlashProvider = props => {
   const { children } = props;
   const [message, setMessage] = useState('Welcome to this Demo!');
 
+  useEffect(() => {
+    if (!message) return undefined;
+
+    const timer = setTimeout(() => {
+      setMessage(null);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [message, setMessage]);
+
   return (
-    <FlashContext.Provider value={{ setMessage }}>
+    <FlashContext.Provider value={{ message, setMessage }}>
       {message ? <Flash>{message}</Flash> : null}
       {children}
     </FlashContext.Provider>
