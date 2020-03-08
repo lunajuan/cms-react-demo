@@ -94,7 +94,13 @@ export const FlashProvider = props => {
                 <span className="flash-container">
                   {message}
                   {undo ? (
-                    <Button className="flash-undo" onClick={() => undo()}>
+                    <Button
+                      className="flash-undo"
+                      onClick={() => {
+                        undo();
+                        removeFlash(message);
+                      }}
+                    >
                       Undo
                     </Button>
                   ) : null}
