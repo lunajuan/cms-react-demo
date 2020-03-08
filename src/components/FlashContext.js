@@ -1,52 +1,111 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import { Transition } from 'react-transition-group';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import Button from './Button';
+
+const TRANSITION_DURATION_MS = 500;
 
 const FlashContext = React.createContext();
 
-const Flash = styled.div`
+const FlashGroup = styled.div`
   position: fixed;
-  bottom: ${props => props.theme.spacing['2']};
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid ${props => props.theme.colors.grey_500};
-  border-radius: 5px;
-  padding: ${props => props.theme.spacing['2']};
+  bottom: ${props => props.theme.spacing['3']};
+  right: ${props => props.theme.spacing['3']};
+  max-width: 300px;
 
-  /* animation */
-  transition: transform 400ms;
-  transform: translateY(
-    ${({ transitionstate }) =>
-      transitionstate === 'entering' || transitionstate === 'entered' ? 0 : 150}%
-  );
+  .flash-enter {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+  .flash-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: transform ${TRANSITION_DURATION_MS}ms ease-in, opacity 300ms ease-in;
+  }
+  .flash-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .flash-exit-active {
+    opacity: 0;
+    transform: translateX(150%);
+    transition: transform ${TRANSITION_DURATION_MS}ms ease-in, opacity 300ms ease-in;
+  }
+`;
+
+const Flash = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  .flash-container {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid ${props => props.theme.colors.grey_500};
+    border-radius: 5px;
+    padding: ${props => props.theme.spacing['2']};
+    margin: ${props => props.theme.spacing['1']} 0;
+  }
+
+  .flash-undo {
+    margin: 0 ${props => props.theme.spacing['1']};
+  }
+`;
+
+const CloseButton = styled.button`
+  appearance: none;
+  padding: ${props => props.theme.spacing['1']} ${props => props.theme.spacing['2']};
+  font-size: ${props => props.theme.fontSize.sm};
+  border-radius: ${props => props.theme.radius.full};
+  margin-left: ${props => props.theme.spacing['3']};
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const FlashProvider = props => {
   const { children } = props;
-  const [message, setMessage] = useState('Welcome to this Demo!');
-  const [showFlash, setShowFlash] = useState(true);
+  const [flashes, setFlashes] = useState([{ message: 'Welcome to the dungeon', undo: null }]);
 
-  useEffect(() => {
-    if (!message) return undefined;
-    return setShowFlash(true);
-  }, [message]);
+  const setFlash = useCallback(
+    (message, undo) => {
+      if (!message || !message.trim().length) return;
 
-  useEffect(() => {
-    if (!showFlash) return undefined;
+      const newFlash = { message: message.trim(), undo };
+      setFlashes([...flashes, newFlash]);
+    },
+    [flashes]
+  );
 
-    const timer = setTimeout(() => {
-      setShowFlash(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [message, setMessage, showFlash]);
+  const removeFlash = useCallback(
+    message => {
+      setFlashes(flashes.filter(flash => flash.message !== message));
+    },
+    [flashes]
+  );
 
   return (
-    <FlashContext.Provider value={{ message, setMessage }}>
-      <Transition in={showFlash} timeout={400} unmountOnExit onExited={() => setMessage(null)}>
-        {transitionstate => <Flash transitionstate={transitionstate}>{message}</Flash>}
-      </Transition>
+    <FlashContext.Provider value={{ setFlash }}>
+      <FlashGroup>
+        <TransitionGroup>
+          {flashes.map(({ message, undo }) => (
+            <CSSTransition key={message} timeout={TRANSITION_DURATION_MS} classNames="flash">
+              <Flash>
+                <span className="flash-container">
+                  {message}
+                  {undo ? (
+                    <Button className="flash-undo" onClick={() => undo()}>
+                      Undo
+                    </Button>
+                  ) : null}
+                  <CloseButton onClick={() => removeFlash(message)}>close</CloseButton>
+                </span>
+              </Flash>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </FlashGroup>
+
       {children}
     </FlashContext.Provider>
   );

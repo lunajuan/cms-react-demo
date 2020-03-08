@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router, Switch, Route, NavLink, useLocation } from 'react-router-dom';
@@ -6,7 +6,7 @@ import sampleData from './sample-data';
 import useHistory from './hooks/useHistory';
 import theme from './styles/theme';
 import GlobalStyle from './styles/GlobalStyle';
-import { FlashProvider } from './components/FlashContext';
+import FlashContext, { FlashProvider } from './components/FlashContext';
 import Container from './components/Container';
 import NotFound from './components/NotFound';
 import Products from './components/Products';
@@ -14,6 +14,15 @@ import Form from './components/Form';
 import EditForm from './components/EdifForm';
 import Button from './components/Button';
 import { removeIndex } from './lib';
+
+const RandomFlash = () => {
+  const { setFlash } = useContext(FlashContext);
+  return (
+    <button type="button" onClick={() => setFlash('Random Flash')}>
+      Show Flash
+    </button>
+  );
+};
 
 const Nav = () => {
   const { pathname } = useLocation();
@@ -70,6 +79,7 @@ const App = () => {
       <Container>
         <Router>
           <FlashProvider>
+            <RandomFlash />
             <Nav />
             <Switch>
               <Route exact path="/">
