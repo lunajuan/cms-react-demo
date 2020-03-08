@@ -12,6 +12,7 @@ const FlashGroup = styled.div`
   bottom: ${props => props.theme.spacing['3']};
   right: ${props => props.theme.spacing['3']};
   max-width: 300px;
+  pointer-events: none;
 
   .flash-enter {
     transform: translateX(150%);
@@ -38,6 +39,7 @@ const Flash = styled.div`
   justify-content: flex-end;
 
   .flash-container {
+    pointer-events: auto;
     display: inline-block;
     background-color: rgba(255, 255, 255, 0.9);
     border: 1px solid ${props => props.theme.colors.grey_500};
