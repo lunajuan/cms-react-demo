@@ -65,15 +65,18 @@ const CloseButton = styled.button`
 
 export const FlashProvider = props => {
   const { children } = props;
-  const [flashes, setFlashes] = useState([{ message: 'Welcome to the dungeon', undo: null }]);
-  console.log('flashes', flashes);
+  const [flashes, setFlashes] = useState([
+    { id: 'default', message: 'Welcome to the dungeon', undo: null },
+  ]);
 
   const setFlash = useCallback(
     (message, undo) => {
       if (!message || !message.trim().length) return;
       const updatedFlashes = undo ? flashes.filter(flash => !flash.undo) : [...flashes];
 
-      const newFlash = { message: message.trim(), undo };
+      const id = (+new Date()).toString();
+
+      const newFlash = { id, message: message.trim(), undo };
       updatedFlashes.push(newFlash);
       setFlashes(updatedFlashes);
     },
@@ -81,8 +84,8 @@ export const FlashProvider = props => {
   );
 
   const removeFlash = useCallback(
-    message => {
-      setFlashes(flashes.filter(flash => flash.message !== message));
+    id => {
+      setFlashes(flashes.filter(flash => flash.id !== id));
     },
     [flashes]
   );
@@ -91,8 +94,8 @@ export const FlashProvider = props => {
     <FlashContext.Provider value={{ setFlash }}>
       <FlashGroup>
         <TransitionGroup>
-          {flashes.map(({ message, undo }) => (
-            <CSSTransition key={message} timeout={TRANSITION_DURATION_MS} classNames="flash">
+          {flashes.map(({ id, message, undo }) => (
+            <CSSTransition key={id} timeout={TRANSITION_DURATION_MS} classNames="flash">
               <Flash>
                 <span className="flash-container">
                   {message}
@@ -101,13 +104,13 @@ export const FlashProvider = props => {
                       className="flash-undo"
                       onClick={() => {
                         undo();
-                        removeFlash(message);
+                        removeFlash(id);
                       }}
                     >
                       Undo
                     </Button>
                   ) : null}
-                  <CloseButton onClick={() => removeFlash(message)}>close</CloseButton>
+                  <CloseButton onClick={() => removeFlash(id)}>close</CloseButton>
                 </span>
               </Flash>
             </CSSTransition>
