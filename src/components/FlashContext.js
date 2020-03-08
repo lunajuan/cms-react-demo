@@ -66,13 +66,16 @@ const CloseButton = styled.button`
 export const FlashProvider = props => {
   const { children } = props;
   const [flashes, setFlashes] = useState([{ message: 'Welcome to the dungeon', undo: null }]);
+  console.log('flashes', flashes);
 
   const setFlash = useCallback(
     (message, undo) => {
       if (!message || !message.trim().length) return;
+      const updatedFlashes = undo ? flashes.filter(flash => !flash.undo) : [...flashes];
 
       const newFlash = { message: message.trim(), undo };
-      setFlashes([...flashes, newFlash]);
+      updatedFlashes.push(newFlash);
+      setFlashes(updatedFlashes);
     },
     [flashes]
   );
