@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import { EditorState, ContentState } from 'draft-js';
-import FlashContext from './FlashContext';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
 
@@ -45,7 +44,6 @@ const FormContainer = styled.form`
 const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
-  const { setMessage: setFlashMessage } = useContext(FlashContext);
 
   return (
     <>
@@ -68,8 +66,6 @@ const Form = props => {
           } else {
             addProduct(allValues);
           }
-
-          setFlashMessage(`${title} Edited`);
 
           browserHistory.push('/');
         }}
