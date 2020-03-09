@@ -111,18 +111,15 @@ const Products = props => {
                   </div>
                   <div className="text">
                     <h3>{title}</h3>
-                    {typeof description === 'string' ? (
-                      <p>{description}</p>
-                    ) : (
-                      // if we didn't trust the html string then we would
-                      // sanitize here or before saving the data.
-                      <div
-                        // eslint-disable-next-line react/no-danger
-                        dangerouslySetInnerHTML={{
-                          __html: stateToHTML(description),
-                        }}
-                      />
-                    )}
+                    <div
+                      // if we didn't trust the html string then we would sanitize
+                      //   here or before saving the data.
+                      //   eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          typeof description === 'string' ? description : stateToHTML(description),
+                      }}
+                    />
                   </div>
                   <div className="controls">
                     <Link to={`/product/edit/${id}`}>

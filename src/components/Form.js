@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { EditorState, ContentState } from 'draft-js';
+import { EditorState } from 'draft-js';
+import { stateFromHTML } from 'draft-js-import-html';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
 
 const createEditorStateFromContent = content => {
-  if (typeof content === 'string')
-    return EditorState.createWithContent(ContentState.createFromText(content));
-  return EditorState.createWithContent(content);
+  const contentState = typeof content === 'string' ? stateFromHTML(content) : content;
+  return EditorState.createWithContent(contentState);
 };
 
 const FormContainer = styled.form`

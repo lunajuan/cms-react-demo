@@ -3,7 +3,7 @@ export default [
     id: '1583181042969',
     title: 'Begin Mug',
     description:
-      'Proin nec est aliquet, malesuada tellus id, ultrices metus. Nam tincidunt odio vitae erat volutpat faucibus. Sed finibus, ex at condimentum laoreet, justo dolor euismod mi, sit amet consectetur ante leo eget metus.',
+      '<p>Proin nec est aliquet, <strong>malesuada</strong> tellus id, ultrices metus. Nam tincidunt odio vitae erat volutpat faucibus. Sed finibus, ex at condimentum laoreet, justo dolor euismod mi, sit amet consectetur ante leo eget metus.</p>',
     image_url: 'https://source.unsplash.com/IuLgi9PWETU/150x150',
     image_author: '@dsmacinnes',
     image_author_url: 'https://unsplash.com/@dsmacinnes',
