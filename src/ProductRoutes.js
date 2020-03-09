@@ -6,7 +6,6 @@ import NotFound from './components/NotFound';
 import Products from './components/Products';
 import Form from './components/Form';
 import EditForm from './components/EdifForm';
-import { removeIndex } from './lib';
 
 const ProductNav = () => {
   const { pathname } = useLocation();
@@ -45,13 +44,13 @@ const ProductRoutes = () => {
   const editProduct = useCallback(
     product => {
       const { id, title } = product;
-      const currentProductsCopy = [...getCurrentProducts()];
+      const currentListOfProducts = getCurrentProducts();
+      const updatedProducts = currentListOfProducts.map(item => {
+        if (item.id === id) return product;
+        return item;
+      });
 
-      const productIndex = currentProductsCopy.findIndex(({ id: productId }) => productId === id);
-      if (productIndex === -1) return;
-
-      currentProductsCopy[productIndex] = product;
-      updateHistory({ updatedProducts: currentProductsCopy, flashMessage: `${title} Updated!` });
+      updateHistory({ updatedProducts, flashMessage: `${title} Updated!` });
     },
     [getCurrentProducts, updateHistory]
   );
