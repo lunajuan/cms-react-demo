@@ -24,6 +24,12 @@ const Content = styled.div`
 
   .heading {
     text-align: center;
+    margin-bottom: 0;
+  }
+
+  .sub-heading {
+    text-align: center;
+    margin-top: 0;
   }
 `;
 
@@ -43,18 +49,12 @@ const Container = props => {
       <Content>
         {/* header */}
         <Header>
-          <h1 className="heading">Draft.js with Formik</h1>
+          <h1 className="heading">Mini React CMS Demo</h1>
+          <p className="sub-heading">Rich Text Editor</p>
         </Header>
 
         {/* app sample goes in here */}
         <Body>{children}</Body>
-
-        {/* footer */}
-        <Footer>
-          <ul>
-            <li>Github</li>
-          </ul>
-        </Footer>
       </Content>
     </Background>
   );
