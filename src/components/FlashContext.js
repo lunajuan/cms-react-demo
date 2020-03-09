@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 import Button from './Button';
 
 const TRANSITION_DURATION_MS = 500;
@@ -67,57 +67,65 @@ const CloseButton = styled.button`
 
 export const FlashProvider = props => {
   const { children } = props;
-  const [flashes, setFlashes] = useState([
-    { id: 'default', message: 'Welcome to the dungeon', undo: null },
-  ]);
+  const [flash, setFlashObj] = useState({});
+  const [showFlash, setShowFlash] = useState(false);
 
-  const setFlash = useCallback(
-    (message, undo) => {
-      if (!message || !message.trim().length) return;
-      const updatedFlashes = undo ? flashes.filter(flash => !flash.undo) : [...flashes];
+  useEffect(() => {
+    if (!showFlash) return undefined;
+    const timer = setTimeout(() => {
+      setShowFlash(false);
+    }, 3000);
 
-      const id = (+new Date()).toString();
+    return () => {
+      clearTimeout(timer);
+    };
+  });
 
-      const newFlash = { id, message: message.trim(), undo };
-      updatedFlashes.push(newFlash);
-      setFlashes(updatedFlashes);
-    },
-    [flashes]
-  );
+  const setFlash = useCallback((message, undo) => {
+    if (!message || !message.trim().length) return;
 
-  const removeFlash = useCallback(
-    id => {
-      setFlashes(flashes.filter(flash => flash.id !== id));
-    },
-    [flashes]
-  );
+    const newFlash = {
+      message: message.trim(),
+      undo,
+    };
+
+    setFlashObj(newFlash);
+    setShowFlash(true);
+  }, []);
 
   return (
     <FlashContext.Provider value={{ setFlash }}>
       <FlashGroup>
-        <TransitionGroup>
-          {flashes.map(({ id, message, undo }) => (
-            <CSSTransition key={id} timeout={TRANSITION_DURATION_MS} classNames="flash">
-              <Flash>
-                <span className="flash-container">
-                  {message}
-                  {undo ? (
-                    <Button
-                      className="flash-undo"
-                      onClick={() => {
-                        undo();
-                        removeFlash(id);
-                      }}
-                    >
-                      Undo
-                    </Button>
-                  ) : null}
-                  <CloseButton onClick={() => removeFlash(id)}>close</CloseButton>
-                </span>
-              </Flash>
-            </CSSTransition>
-          ))}
-        </TransitionGroup>
+        <CSSTransition
+          in={showFlash}
+          timeout={TRANSITION_DURATION_MS}
+          classNames="flash"
+          unmountOnExit
+        >
+          <Flash>
+            <span className="flash-container">
+              {flash.message}
+              {flash.undo ? (
+                <Button
+                  className="flash-undo"
+                  onClick={() => {
+                    flash.undo();
+                    setShowFlash(false);
+                  }}
+                >
+                  Undo
+                </Button>
+              ) : null}
+              <CloseButton
+                onClick={() => {
+                  setShowFlash(false);
+                }}
+              >
+                close
+              </CloseButton>
+            </span>
+          </Flash>
+        </CSSTransition>
       </FlashGroup>
 
       {children}
