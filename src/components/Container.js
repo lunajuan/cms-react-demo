@@ -39,8 +39,6 @@ const Body = styled.main`
   padding: ${props => props.theme.spacing['4']};
 `;
 
-const Footer = styled.footer``;
-
 const Container = props => {
   const { children } = props;
 

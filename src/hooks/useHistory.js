@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useEffect } from 'react';
+import { useState, useCallback, useContext, useEffect } from 'react';
 import FlashContext from '../components/FlashContext';
 
 const useHistory = initialHistory => {
