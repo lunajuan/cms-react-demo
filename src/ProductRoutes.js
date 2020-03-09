@@ -25,7 +25,7 @@ const ProductRoutes = () => {
     product => {
       const { title } = product;
       const currentProducts = getCurrentProducts([]);
-      const updatedProducts = [...currentProducts, product];
+      const updatedProducts = [product, ...currentProducts];
       updateHistory({ updatedProducts, flashMessage: `${title} Added!` });
     },
     [getCurrentProducts, updateHistory]
