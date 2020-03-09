@@ -23,6 +23,13 @@ const EditorWrapper = styled.div`
     }
   }
 
+  &.is-invalid {
+    .DraftEditor-root {
+      border-width: 2px;
+      border-color: ${props => props.theme.colors.red_400};
+    }
+  }
+
   .public-DraftEditor-content {
     height: 300px;
     overflow: scroll;
@@ -182,7 +189,7 @@ const colorButton = toggle => {
 };
 
 const RichTextArea = props => {
-  const { name, value: editorState, setFieldValue, charsLimit } = props;
+  const { name, value: editorState, setFieldValue, setFieldTouched, charsLimit, isInvalid } = props;
   const [isFocused, setFocus] = useState(false);
 
   const initialCharsRemaining = editorContentLength(editorState);
@@ -215,7 +222,10 @@ const RichTextArea = props => {
   );
 
   const onFocus = useCallback(() => setFocus(true), []);
-  const onBlur = useCallback(() => setFocus(false), []);
+  const onBlur = useCallback(() => {
+    setFocus(false);
+    setFieldTouched(name, true);
+  }, [name, setFieldTouched]);
 
   const toggleInlineStyle = useCallback(
     inlineStyle => onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle)),
@@ -256,8 +266,12 @@ const RichTextArea = props => {
     [editorState, onChange]
   );
 
+  const wrapperClasses = [];
+  if (isFocused) wrapperClasses.push('is-focused');
+  if (isInvalid) wrapperClasses.push('is-invalid');
+
   return (
-    <EditorWrapper className={isFocused ? 'is-focused' : null}>
+    <EditorWrapper className={wrapperClasses.length ? wrapperClasses.join(' ') : null}>
       <Controls>
         <div className="buttons">
           <div className="default-buttons">

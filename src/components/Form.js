@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import { EditorState, ContentState } from 'draft-js';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
@@ -29,6 +30,11 @@ const FormContainer = styled.form`
       outline: none;
       box-shadow: ${props => props.theme.boxShadow.outline};
     }
+
+    &.is-invalid {
+      border-width: 2px;
+      border-color: ${props => props.theme.colors.red_400};
+    }
   }
 
   .field-group {
@@ -40,6 +46,18 @@ const FormContainer = styled.form`
     color: ${props => props.theme.colors.grey_600};
   }
 `;
+
+const Error = styled.span`
+  margin: ${props => props.theme.spacing['2']};
+  color: ${props => props.theme.colors.red_400};
+`;
+
+const ProductSchema = Yup.object().shape({
+  title: Yup.string().required('* required'),
+  description: Yup.mixed().test('is-empty', '* Required', value =>
+    value.getCurrentContent().hasText()
+  ),
+});
 
 // pass in id
 const Form = props => {
@@ -57,6 +75,8 @@ const Form = props => {
             ? createEditorStateFromContent(product.description)
             : EditorState.createEmpty(),
         }}
+        validationSchema={ProductSchema}
+        validateOnChange={false}
         onSubmit={values => {
           const { title, description } = values;
           const id = product ? product.id : (+new Date()).toString();
@@ -75,34 +95,44 @@ const Form = props => {
           const {
             values: { title, description },
             errors,
+            touched,
             handleSubmit,
             handleChange,
             handleBlur,
             setFieldValue,
             setFieldTouched,
           } = props;
+
+          const titleInvalid = errors.title && touched.title;
+          const descriptionInvalid = errors.description && touched.description;
+
           return (
             <FormContainer onSubmit={handleSubmit}>
               <label htmlFor="title" className="field-group">
-                <span className="field-label">Title</span>
+                <span className="field-label">
+                  Title{titleInvalid ? <Error>{errors.title}</Error> : null}
+                </span>
                 <input
                   type="text"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={title}
                   name="title"
+                  className={titleInvalid ? 'is-invalid' : null}
                 />
-                {errors.title && <div id="feedback">{errors.title}</div>}
               </label>
 
               <label htmlFor="description" className="field-group">
-                <span className="field-label">Description</span>
+                <span className="field-label">
+                  Description{descriptionInvalid ? <Error>{errors.description}</Error> : null}
+                </span>
                 <RichTextArea
                   name="description"
                   value={description}
                   setFieldValue={setFieldValue}
-                  setFieldToched={setFieldTouched}
+                  setFieldTouched={setFieldTouched}
                   charsLimit={500}
+                  isInvalid={descriptionInvalid}
                 />
               </label>
               <Button type="submit">Submit</Button>
