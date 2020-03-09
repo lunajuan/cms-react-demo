@@ -33,10 +33,11 @@ const ProductRoutes = () => {
   );
 
   const removeProduct = useCallback(
-    index => {
+    product => {
+      const { id, title } = product;
       const currentListOfProducts = getCurrentProducts();
-      const updatedProducts = removeIndex(currentListOfProducts, index);
-      updateHistory({ updatedProducts });
+      const updatedProducts = currentListOfProducts.filter(item => item.id !== id);
+      updateHistory({ updatedProducts, flashMessage: `${title} Deleted!` });
     },
     [getCurrentProducts, updateHistory]
   );

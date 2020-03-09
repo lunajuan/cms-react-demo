@@ -87,7 +87,7 @@ const Products = props => {
 
         {hasProducts ? (
           <List>
-            {products.map((product, i) => {
+            {products.map(product => {
               const { id, title, description, image_url, image_author, image_author_url } = product;
               return (
                 <Item key={id}>
@@ -128,7 +128,7 @@ const Products = props => {
                     <Link to={`/product/edit/${id}`}>
                       <Button className="control">Edit</Button>
                     </Link>
-                    <Button className="control" danger onClick={() => removeProduct(i)}>
+                    <Button className="control" danger onClick={() => removeProduct(product)}>
                       Delete
                     </Button>
                   </div>
