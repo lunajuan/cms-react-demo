@@ -119,7 +119,7 @@ const Products = props => {
                       <div
                         // eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={{
-                          __html: stateToHTML(description.getCurrentContent()),
+                          __html: stateToHTML(description),
                         }}
                       />
                     )}

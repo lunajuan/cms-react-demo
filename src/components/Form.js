@@ -10,7 +10,7 @@ import RichTextArea from './RichTextArea';
 const createEditorStateFromContent = content => {
   if (typeof content === 'string')
     return EditorState.createWithContent(ContentState.createFromText(content));
-  return content;
+  return EditorState.createWithContent(content);
 };
 
 const FormContainer = styled.form`
@@ -80,7 +80,7 @@ const Form = props => {
         onSubmit={values => {
           const { title, description } = values;
           const id = product ? product.id : (+new Date()).toString();
-          const allValues = { id, title, description };
+          const allValues = { id, title, description: description.getCurrentContent() };
 
           if (product) {
             editProduct(allValues);
