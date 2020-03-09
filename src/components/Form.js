@@ -3,13 +3,20 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { EditorState } from 'draft-js';
-import { stateFromHTML } from 'draft-js-import-html';
+import { EditorState, ContentState, convertFromRaw } from 'draft-js';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
 
 const createEditorStateFromContent = content => {
-  const contentState = typeof content === 'string' ? stateFromHTML(content) : content;
+  let contentState;
+  if (typeof content === 'string') {
+    contentState = ContentState.createFromText(content);
+  } else if (content.blocks) {
+    contentState = convertFromRaw(content);
+  } else {
+    contentState = content;
+  }
+
   return EditorState.createWithContent(contentState);
 };
 

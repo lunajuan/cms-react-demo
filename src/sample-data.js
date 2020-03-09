@@ -2,8 +2,27 @@ export default [
   {
     id: '1583181042969',
     title: 'Begin Mug',
-    description:
-      '<p>Proin nec est aliquet, <strong>malesuada</strong> tellus id, ultrices metus. Nam tincidunt odio vitae erat volutpat faucibus. Sed finibus, ex at condimentum laoreet, justo dolor euismod mi, sit amet consectetur ante leo eget metus.</p>',
+    description: {
+      blocks: [
+        {
+          key: '2fit1',
+          text:
+            'Proin nec est aliquet, malesuada tellus id, ultrices metus. Nam tincidunt odio vitae erat volutpat faucibus. Sed finibus, ex at condimentum laoreet, justo dolor euismod mi, sit amet consectetur ante leo eget metus.',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [
+            { offset: 23, length: 9, style: 'ITALIC' },
+            { offset: 59, length: 40, style: 'grey_600' },
+            { offset: 60, length: 47, style: 'BOLD' },
+            { offset: 99, length: 8, style: 'red_500' },
+            { offset: 99, length: 8, style: 'UNDERLINE' },
+          ],
+          entityRanges: [],
+          data: {},
+        },
+      ],
+      entityMap: {},
+    },
     image_url: 'https://source.unsplash.com/IuLgi9PWETU/150x150',
     image_author: '@dsmacinnes',
     image_author_url: 'https://unsplash.com/@dsmacinnes',
@@ -11,8 +30,38 @@ export default [
   {
     id: '1583209740643',
     title: 'Sweet Kicks',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam semper lacus non consequat consequat. Proin augue urna, tristique dictum molestie ac, pellentesque ut augue. Integer tincidunt leo tortor, id aliquet nulla varius vitae. Nullam tempus rutrum scelerisque.',
+    description: {
+      blocks: [
+        {
+          key: '6eojn',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {},
+        },
+        {
+          key: 'f29s7',
+          text: 'Nam semper lacus non consequat consequat.',
+          type: 'unordered-list-item',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {},
+        },
+        {
+          key: 'amtsm',
+          text: 'Proin augue urna, tristique dictum molestie ac, pellentesque ut augue.',
+          type: 'unordered-list-item',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {},
+        },
+      ],
+      entityMap: {},
+    },
     image_url: 'https://source.unsplash.com/-z-X3MJ1VOI/150x150',
     image_author: '@charlesetoroma',
     image_author_url: 'https://unsplash.com/@charlesetoroma',
@@ -20,8 +69,50 @@ export default [
   {
     id: '1583210054922',
     title: 'Fixie',
-    description:
-      'Praesent bibendum nulla quam, at malesuada nisl rutrum a. Maecenas nisi neque, ornare vitae nisl dapibus, rutrum ornare mauris. Curabitur posuere suscipit dui, eu rhoncus nisl iaculis ut. Sed et nisl neque. Suspendisse non iaculis dui, ut blandit nisl. Maecenas nec sem tempus, tincidunt purus nec, imperdiet dui. Suspendisse tempor tincidunt turpis, id viverra purus laoreet eu. Nunc libero odio, pretium id elementum sit amet, posuere et metus.',
+    description: {
+      blocks: [
+        {
+          key: '6eojn',
+          text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [
+            { offset: 0, length: 57, style: 'BOLD' },
+            { offset: 0, length: 57, style: 'grey_500' },
+            { offset: 0, length: 57, style: 'ITALIC' },
+          ],
+          entityRanges: [],
+          data: {},
+        },
+        {
+          key: 'f29s7',
+          text: 'Nam semper lacus non consequat consequat.',
+          type: 'unordered-list-item',
+          depth: 0,
+          inlineStyleRanges: [
+            { offset: 21, length: 9, style: 'ITALIC' },
+            { offset: 21, length: 9, style: 'BOLD' },
+            { offset: 21, length: 9, style: 'grey_400' },
+            { offset: 21, length: 9, style: 'UNDERLINE' },
+          ],
+          entityRanges: [],
+          data: {},
+        },
+        {
+          key: 'amtsm',
+          text: 'Proin augue urna, tristique dictum molestie ac, pellentesque ut augue.',
+          type: 'unordered-list-item',
+          depth: 0,
+          inlineStyleRanges: [
+            { offset: 0, length: 70, style: 'indigo_500' },
+            { offset: 0, length: 70, style: 'BOLD' },
+          ],
+          entityRanges: [],
+          data: {},
+        },
+      ],
+      entityMap: {},
+    },
     image_url: 'https://source.unsplash.com/QEPz9JW0_Sc/150x150',
     image_author: '@technobulka',
     image_author_url: 'https://unsplash.com/@technobulka',

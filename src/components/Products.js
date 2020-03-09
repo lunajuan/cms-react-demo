@@ -2,9 +2,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { convertFromRaw } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
 import Button from './Button';
-// import List from './List';
+import { colorStyles } from './RichTextArea';
+
+const parseContentState = contentState => {
+  const options = {
+    inlineStyles: colorStyles.reduce((map, styleProps) => {
+      const updatedMap = map;
+      const { styleName, style } = styleProps;
+      updatedMap[styleName] = { style };
+      return updatedMap;
+    }, {}),
+  };
+
+  return stateToHTML(contentState, options);
+};
+
+const parseRichText = content =>
+  content.blocks ? parseContentState(convertFromRaw(content)) : parseContentState(content);
 
 const Section = styled.div`
   .controls {
@@ -111,15 +128,18 @@ const Products = props => {
                   </div>
                   <div className="text">
                     <h3>{title}</h3>
-                    <div
-                      // if we didn't trust the html string then we would sanitize
-                      //   here or before saving the data.
-                      //   eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          typeof description === 'string' ? description : stateToHTML(description),
-                      }}
-                    />
+                    {typeof description === 'string' ? (
+                      <p>{description}</p>
+                    ) : (
+                      <div
+                        // if we didn't trust the html string then we would sanitize
+                        //   here or before saving the data.
+                        //   eslint-disable-next-line react/no-danger
+                        dangerouslySetInnerHTML={{
+                          __html: parseRichText(description),
+                        }}
+                      />
+                    )}
                   </div>
                   <div className="controls">
                     <Link to={`/product/edit/${id}`}>

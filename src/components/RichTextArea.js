@@ -109,7 +109,7 @@ const blockStyles = [
 
 // Color inline styles are mutually exclusive. Meaning they can't exist at the
 // same time so enabling one should disable all others.
-const colorStyles = [
+export const colorStyles = [
   { label: 'Indigo 500', styleName: 'indigo_500', style: { color: colors.indigo_500 } },
   { label: 'Red 500', styleName: 'red_500', style: { color: colors.red_500 } },
   { label: 'Grey 900', styleName: 'grey_900', style: { color: colors.grey_900 } },
