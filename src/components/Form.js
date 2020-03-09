@@ -9,6 +9,7 @@ import RichTextArea from './RichTextArea';
 const createEditorStateFromContent = content => {
   if (typeof content === 'string')
     return EditorState.createWithContent(ContentState.createFromText(content));
+  return content;
 };
 
 const FormContainer = styled.form`
