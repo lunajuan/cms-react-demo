@@ -77,8 +77,11 @@ const Form = props => {
   const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
+    if (imageOptions) return;
+
     setIsFetching(true);
-    const fetchImagePromise = Array(NUMBER_OF_IMAGES)
+    const numberOfImages = imagePreviewUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
+    const fetchImagePromise = Array(numberOfImages)
       .fill()
       .map((_, index) =>
         fetch(`https://source.unsplash.com/collection/345710/150x150?sig=${index}`)
@@ -89,7 +92,7 @@ const Form = props => {
       setImageOptions(imageUrls);
       setIsFetching(false);
     });
-  }, []);
+  }, [imageOptions, imagePreviewUrl]);
 
   return (
     <>
