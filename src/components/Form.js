@@ -90,23 +90,25 @@ const ProductSchema = Yup.object().shape({
 const ImageRadioInputs = props => {
   const { name, urls, value, onChange, onBlur } = props;
 
-  return urls.map((url, i) => (
-    <div key={url} className="image-radios">
-      {/* eslint-disable-next-line react/no-array-index-key */}
-      <label htmlFor={`${i}`}>
-        <input
-          id={`${i}`}
-          type="radio"
-          name={name}
-          value={url}
-          checked={url === value}
-          onChange={onChange}
-          onBlur={onBlur}
-        />
-        <img src={url} alt="" />
-      </label>
-    </div>
-  ));
+  return urls.map((url, i) => {
+    const key = `${url}${i}`;
+    return (
+      <div key={key} className="image-radios">
+        <label htmlFor={key}>
+          <input
+            id={key}
+            type="radio"
+            name={name}
+            value={url}
+            checked={url === value}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+          <img src={url} alt="" />
+        </label>
+      </div>
+    );
+  });
 };
 
 // pass in id
