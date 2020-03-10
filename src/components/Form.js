@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
+
+const NUMBER_OF_IMAGES = 4;
 
 const createEditorStateFromContent = content => {
   let contentState;
@@ -71,6 +73,23 @@ const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
   const [imagePreviewUrl] = useState(product && product.image_url ? product.image_url : null);
+  const [imageOptions, setImageOptions] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+
+  useEffect(() => {
+    setIsFetching(true);
+    const fetchImagePromise = Array(NUMBER_OF_IMAGES)
+      .fill()
+      .map((_, index) =>
+        fetch(`https://source.unsplash.com/collection/345710/150x150?sig=${index}`)
+      );
+
+    Promise.all(fetchImagePromise).then(imageRes => {
+      const imageUrls = imageRes.map(res => res.url);
+      setImageOptions(imageUrls);
+      setIsFetching(false);
+    });
+  }, []);
 
   return (
     <>
@@ -144,6 +163,11 @@ const Form = props => {
                   isInvalid={descriptionInvalid}
                 />
               </label>
+              <div>
+                {isFetching && 'Fetching Images..'}
+                {/* eslint-disable-next-line react/no-array-index-key */}
+                {imageOptions && imageOptions.map((url, i) => <img key={i} src={url} alt="" />)}
+              </div>
               <Button type="submit">Submit</Button>
             </FormContainer>
           );
