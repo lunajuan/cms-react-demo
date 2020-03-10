@@ -54,6 +54,25 @@ const FormContainer = styled.form`
   .field-label {
     color: ${props => props.theme.colors.grey_600};
   }
+
+  .image-radios {
+    position: relative;
+
+    [type='radio'] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    [type='radio'] + img {
+      cursor: pointer;
+    }
+
+    [type='radio']:checked + img {
+      outline: 2px solid red;
+    }
+  }
 `;
 
 const Error = styled.span`
@@ -67,6 +86,28 @@ const ProductSchema = Yup.object().shape({
     value.getCurrentContent().hasText()
   ),
 });
+
+const ImageRadioInputs = props => {
+  const { name, urls, value, onChange, onBlur } = props;
+
+  return urls.map((url, i) => (
+    <div key={url} className="image-radios">
+      {/* eslint-disable-next-line react/no-array-index-key */}
+      <label htmlFor={`${i}`}>
+        <input
+          id={`${i}`}
+          type="radio"
+          name={name}
+          value={url}
+          checked={url === value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+        <img src={url} alt="" />
+      </label>
+    </div>
+  ));
+};
 
 // pass in id
 const Form = props => {
@@ -104,6 +145,7 @@ const Form = props => {
           description: product
             ? createEditorStateFromContent(product.description)
             : EditorState.createEmpty(),
+          image_url: imagePreviewUrl || '',
         }}
         validationSchema={ProductSchema}
         validateOnChange={false}
@@ -123,7 +165,7 @@ const Form = props => {
       >
         {props => {
           const {
-            values: { title, description },
+            values: { title, description, image_url },
             errors,
             touched,
             handleSubmit,
@@ -166,10 +208,18 @@ const Form = props => {
                   isInvalid={descriptionInvalid}
                 />
               </label>
-              <div>
+              <div className="field-group">
+                <span className="field-label">Image</span>
                 {isFetching && 'Fetching Images..'}
-                {/* eslint-disable-next-line react/no-array-index-key */}
-                {imageOptions && imageOptions.map((url, i) => <img key={i} src={url} alt="" />)}
+                {imageOptions && (
+                  <ImageRadioInputs
+                    name="image_url"
+                    value={image_url}
+                    urls={imagePreviewUrl ? [imagePreviewUrl, ...imageOptions] : imageOptions}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                )}
               </div>
               <Button type="submit">Submit</Button>
             </FormContainer>
