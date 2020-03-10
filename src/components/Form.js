@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
+
+const NUMBER_OF_IMAGES = 4;
 
 const createEditorStateFromContent = content => {
   let contentState;
@@ -52,6 +54,25 @@ const FormContainer = styled.form`
   .field-label {
     color: ${props => props.theme.colors.grey_600};
   }
+
+  .image-radios {
+    position: relative;
+
+    [type='radio'] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    [type='radio'] + img {
+      cursor: pointer;
+    }
+
+    [type='radio']:checked + img {
+      outline: 2px solid red;
+    }
+  }
 `;
 
 const Error = styled.span`
@@ -66,10 +87,57 @@ const ProductSchema = Yup.object().shape({
   ),
 });
 
+const ImageRadioInputs = props => {
+  const { name, urls, value, onChange, onBlur } = props;
+
+  return urls.map((url, i) => {
+    const key = `${url}${i}`;
+    return (
+      <div key={key} className="image-radios">
+        <label htmlFor={key}>
+          <input
+            id={key}
+            type="radio"
+            name={name}
+            value={url}
+            checked={url === value}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+          <img src={url} alt="" />
+        </label>
+      </div>
+    );
+  });
+};
+
 // pass in id
 const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
+  const [imageOptions, setImageOptions] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+
+  const initialImageUrl = product && product.image_url ? product.image_url : null;
+
+  useEffect(() => {
+    if (imageOptions) return;
+
+    setIsFetching(true);
+    const numberOfImages = initialImageUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
+    const fetchImagePromise = Array(numberOfImages)
+      .fill()
+      .map((_, index) =>
+        fetch(`https://source.unsplash.com/collection/345710/150x150?sig=${index}`)
+      );
+
+    Promise.all(fetchImagePromise).then(imageRes => {
+      const fetchedUrls = imageRes.map(res => res.url);
+      const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
+      setImageOptions(allUrls);
+      setIsFetching(false);
+    });
+  }, [imageOptions, initialImageUrl]);
 
   return (
     <>
@@ -81,13 +149,14 @@ const Form = props => {
           description: product
             ? createEditorStateFromContent(product.description)
             : EditorState.createEmpty(),
+          image_url: initialImageUrl || '',
         }}
         validationSchema={ProductSchema}
         validateOnChange={false}
         onSubmit={values => {
-          const { title, description } = values;
+          const { title, description, image_url } = values;
           const id = product ? product.id : (+new Date()).toString();
-          const allValues = { id, title, description: description.getCurrentContent() };
+          const allValues = { id, title, description: description.getCurrentContent(), image_url };
 
           if (product) {
             editProduct(allValues);
@@ -100,7 +169,7 @@ const Form = props => {
       >
         {props => {
           const {
-            values: { title, description },
+            values: { title, description, image_url },
             errors,
             touched,
             handleSubmit,
@@ -115,6 +184,7 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
+              {image_url && <img src={image_url} alt="" />}
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
@@ -142,6 +212,19 @@ const Form = props => {
                   isInvalid={descriptionInvalid}
                 />
               </label>
+              <div className="field-group">
+                <span className="field-label">Image</span>
+                {isFetching && 'Fetching Images..'}
+                {imageOptions && (
+                  <ImageRadioInputs
+                    name="image_url"
+                    value={image_url}
+                    urls={imageOptions}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                )}
+              </div>
               <Button type="submit">Submit</Button>
             </FormContainer>
           );
