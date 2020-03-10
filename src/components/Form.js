@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -70,6 +70,7 @@ const ProductSchema = Yup.object().shape({
 const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
+  const [imagePreviewUrl] = useState(product && product.image_url ? product.image_url : null);
 
   return (
     <>
@@ -115,6 +116,7 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
+              {imagePreviewUrl && <img src={imagePreviewUrl} alt="" />}
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
