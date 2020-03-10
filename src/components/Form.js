@@ -113,15 +113,16 @@ const ImageRadioInputs = props => {
 const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
-  const [imagePreviewUrl] = useState(product && product.image_url ? product.image_url : null);
   const [imageOptions, setImageOptions] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
+
+  const initialImageUrl = product && product.image_url ? product.image_url : null;
 
   useEffect(() => {
     if (imageOptions) return;
 
     setIsFetching(true);
-    const numberOfImages = imagePreviewUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
+    const numberOfImages = initialImageUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
     const fetchImagePromise = Array(numberOfImages)
       .fill()
       .map((_, index) =>
@@ -129,11 +130,12 @@ const Form = props => {
       );
 
     Promise.all(fetchImagePromise).then(imageRes => {
-      const imageUrls = imageRes.map(res => res.url);
-      setImageOptions(imageUrls);
+      const fetchedUrls = imageRes.map(res => res.url);
+      const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
+      setImageOptions(allUrls);
       setIsFetching(false);
     });
-  }, [imageOptions, imagePreviewUrl]);
+  }, [imageOptions, initialImageUrl]);
 
   return (
     <>
@@ -145,7 +147,7 @@ const Form = props => {
           description: product
             ? createEditorStateFromContent(product.description)
             : EditorState.createEmpty(),
-          image_url: imagePreviewUrl || '',
+          image_url: initialImageUrl || '',
         }}
         validationSchema={ProductSchema}
         validateOnChange={false}
@@ -180,7 +182,7 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
-              {imagePreviewUrl && <img src={imagePreviewUrl} alt="" />}
+              {image_url && <img src={image_url} alt="" />}
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
@@ -215,7 +217,7 @@ const Form = props => {
                   <ImageRadioInputs
                     name="image_url"
                     value={image_url}
-                    urls={imagePreviewUrl ? [imagePreviewUrl, ...imageOptions] : imageOptions}
+                    urls={imageOptions}
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
