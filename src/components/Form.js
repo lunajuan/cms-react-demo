@@ -152,9 +152,9 @@ const Form = props => {
         validationSchema={ProductSchema}
         validateOnChange={false}
         onSubmit={values => {
-          const { title, description } = values;
+          const { title, description, image_url } = values;
           const id = product ? product.id : (+new Date()).toString();
-          const allValues = { id, title, description: description.getCurrentContent() };
+          const allValues = { id, title, description: description.getCurrentContent(), image_url };
 
           if (product) {
             editProduct(allValues);
