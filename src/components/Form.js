@@ -4,10 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
+import nprogress from 'nprogress';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
 
 const NUMBER_OF_IMAGES = 4;
+const IMAGE_CONTAINER_CLASS = 'image-container';
 
 const createEditorStateFromContent = content => {
   let contentState;
@@ -53,6 +55,10 @@ const FormContainer = styled.form`
 
   .field-label {
     color: ${props => props.theme.colors.grey_600};
+  }
+
+  .${IMAGE_CONTAINER_CLASS} {
+    min-height: ${props => props.theme.spacing['8']};
   }
 
   .image-radios {
@@ -120,10 +126,13 @@ const Form = props => {
 
   const initialImageUrl = product && product.image_url ? product.image_url : null;
 
+  nprogress.configure({ parent: `.${IMAGE_CONTAINER_CLASS}` });
+
   useEffect(() => {
     if (imageOptions) return;
 
     setIsFetching(true);
+    nprogress.start();
     const numberOfImages = initialImageUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
     const fetchImagePromise = Array(numberOfImages)
       .fill()
@@ -136,6 +145,7 @@ const Form = props => {
       const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
       setImageOptions(allUrls);
       setIsFetching(false);
+      nprogress.done();
     });
   }, [imageOptions, initialImageUrl]);
 
@@ -214,16 +224,18 @@ const Form = props => {
               </label>
               <div className="field-group">
                 <span className="field-label">Image</span>
-                {isFetching && 'Fetching Images..'}
-                {imageOptions && (
-                  <ImageRadioInputs
-                    name="image_url"
-                    value={image_url}
-                    urls={imageOptions}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                )}
+                <div className={IMAGE_CONTAINER_CLASS}>
+                  {isFetching && 'Fetching Images..'}
+                  {imageOptions && (
+                    <ImageRadioInputs
+                      name="image_url"
+                      value={image_url}
+                      urls={imageOptions}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  )}
+                </div>
               </div>
               <Button type="submit">Submit</Button>
             </FormContainer>
