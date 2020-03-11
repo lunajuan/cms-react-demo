@@ -25,7 +25,7 @@ const EditorWrapper = styled.div`
 
   &.is-invalid {
     .DraftEditor-root {
-      border-width: 2px;
+      border-width: 1px;
       border-color: ${props => props.theme.colors.red_400};
     }
   }

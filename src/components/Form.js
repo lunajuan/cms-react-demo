@@ -43,7 +43,7 @@ const FormContainer = styled.form`
     }
 
     &.is-invalid {
-      border-width: 2px;
+      border-width: 1px;
       border-color: ${props => props.theme.colors.red_400};
     }
   }
