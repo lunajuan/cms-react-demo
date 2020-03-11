@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
+import nprogress from 'nprogress';
 import Button from './Button';
 import RichTextArea from './RichTextArea';
 
@@ -57,7 +58,6 @@ const FormContainer = styled.form`
   }
 
   .${IMAGE_CONTAINER_CLASS} {
-    border: 1px solid red;
     min-height: ${props => props.theme.spacing['8']};
   }
 
@@ -126,10 +126,13 @@ const Form = props => {
 
   const initialImageUrl = product && product.image_url ? product.image_url : null;
 
+  nprogress.configure({ parent: `.${IMAGE_CONTAINER_CLASS}` });
+
   useEffect(() => {
     if (imageOptions) return;
 
     setIsFetching(true);
+    nprogress.start();
     const numberOfImages = initialImageUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
     const fetchImagePromise = Array(numberOfImages)
       .fill()
@@ -142,6 +145,7 @@ const Form = props => {
       const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
       setImageOptions(allUrls);
       setIsFetching(false);
+      nprogress.done();
     });
   }, [imageOptions, initialImageUrl]);
 
