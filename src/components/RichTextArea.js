@@ -31,7 +31,7 @@ const EditorWrapper = styled.div`
   }
 
   .public-DraftEditor-content {
-    height: 300px;
+    height: 200px;
     overflow: scroll;
   }
 `;
