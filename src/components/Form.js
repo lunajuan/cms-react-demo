@@ -67,10 +67,15 @@ const FormContainer = styled.form`
   }
 
   .${IMAGE_CONTAINER_CLASS} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-gap: ${props => props.theme.spacing['2']};
+    justify-content: center;
     min-height: ${props => props.theme.spacing['8']};
+    padding-top: ${props => props.theme.spacing['2']};
   }
 
-  .image-radios {
+  .image-radio {
     position: relative;
 
     [type='radio'] {
@@ -81,6 +86,8 @@ const FormContainer = styled.form`
     }
 
     [type='radio'] + img {
+      display: block;
+      width: 100%;
       cursor: pointer;
     }
 
@@ -108,7 +115,7 @@ const ImageRadioInputs = props => {
   return urls.map((url, i) => {
     const key = `${url}${i}`;
     return (
-      <div key={key} className="image-radios">
+      <div key={key} className="image-radio">
         <label htmlFor={key}>
           <input
             id={key}
@@ -232,9 +239,8 @@ const Form = props => {
                 />
               </label>
               <div className="field-group">
-                <span className="field-label">Image</span>
+                <span className="field-label">Image {isFetching && 'Fetching Images..'}</span>
                 <div className={IMAGE_CONTAINER_CLASS}>
-                  {isFetching && 'Fetching Images..'}
                   {imageOptions && (
                     <ImageRadioInputs
                       name="image_url"
