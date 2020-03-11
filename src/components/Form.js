@@ -48,13 +48,22 @@ const FormContainer = styled.form`
     }
   }
 
+  .image-preview {
+    margin: ${props => props.theme.spacing['6']} 0;
+    display: block;
+    width: 150px;
+    height: 150px;
+  }
+
   .field-group {
     display: block;
-    margin-bottom: ${props => props.theme.spacing['3']};
+    margin: ${props => props.theme.spacing['8']} 0;
   }
 
   .field-label {
+    display: block;
     color: ${props => props.theme.colors.grey_600};
+    margin: ${props => props.theme.spacing['3']} 0;
   }
 
   .${IMAGE_CONTAINER_CLASS} {
@@ -194,7 +203,7 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
-              {image_url && <img src={image_url} alt="" />}
+              {image_url && <img src={image_url} alt="" className="image-preview" />}
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
