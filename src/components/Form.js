@@ -88,7 +88,7 @@ const FormContainer = styled.form`
       height: 0;
     }
 
-    [type='radio'] + img {
+    img {
       display: block;
       width: 100%;
       cursor: pointer;
@@ -100,9 +100,27 @@ const FormContainer = styled.form`
       }
     }
 
-    [type='radio']:checked + img {
-      border: 2px solid ${props => props.theme.colors.indigo_400};
-      box-shadow: none;
+    &.is-selected {
+      img {
+        box-shadow: none;
+      }
+
+      &::after {
+        content: '✓';
+        color: white;
+        background-color: ${props => props.theme.colors.cyan_500};
+        border-radius: ${props => props.theme.radius.full};
+        width: 10px;
+        height: 10px;
+        padding: ${props => props.theme.spacing['3']};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
     }
   }
 `;
@@ -124,8 +142,9 @@ const ImageRadioInputs = props => {
 
   return urls.map((url, i) => {
     const key = `${url}${i}`;
+    const checked = url === value;
     return (
-      <div key={key} className="image-radio">
+      <div key={key} className={`image-radio${checked ? ' is-selected' : ''}`}>
         <label htmlFor={key}>
           <input
             id={key}
@@ -216,7 +235,6 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
-              {image_url && <img src={image_url} alt="" className="image-preview" />}
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
