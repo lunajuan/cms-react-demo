@@ -132,7 +132,7 @@ const Error = styled.span`
 
 const ProductSchema = Yup.object().shape({
   title: Yup.string().required('* required'),
-  description: Yup.mixed().test('is-empty', '* Required', value =>
+  description: Yup.mixed().test('is-empty', '* required', value =>
     value.getCurrentContent().hasText()
   ),
 });
