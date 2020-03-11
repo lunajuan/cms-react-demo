@@ -192,8 +192,6 @@ const Form = props => {
 
   return (
     <>
-      <h1>{product ? 'Edit' : 'New'}</h1>
-
       <Formik
         initialValues={{
           title: product ? product.title : '',
