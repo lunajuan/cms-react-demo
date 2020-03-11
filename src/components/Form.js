@@ -89,10 +89,17 @@ const FormContainer = styled.form`
       display: block;
       width: 100%;
       cursor: pointer;
+      box-shadow: ${props => props.theme.boxShadow.default};
+      border-radius: 5px;
+
+      &:hover {
+        box-shadow: ${props => props.theme.boxShadow.lg};
+      }
     }
 
     [type='radio']:checked + img {
-      outline: 2px solid red;
+      border: 2px solid ${props => props.theme.colors.indigo_400};
+      box-shadow: none;
     }
   }
 `;
