@@ -43,25 +43,42 @@ const FormContainer = styled.form`
     }
 
     &.is-invalid {
-      border-width: 2px;
+      border-width: 1px;
       border-color: ${props => props.theme.colors.red_400};
     }
   }
 
+  .image-preview {
+    margin: ${props => props.theme.spacing['6']} 0;
+    display: block;
+    width: 150px;
+    height: 150px;
+  }
+
   .field-group {
     display: block;
-    margin-bottom: ${props => props.theme.spacing['3']};
+    margin: ${props => props.theme.spacing['8']} 0;
   }
 
   .field-label {
+    display: block;
     color: ${props => props.theme.colors.grey_600};
+    margin: ${props => props.theme.spacing['3']} 0;
   }
 
   .${IMAGE_CONTAINER_CLASS} {
-    min-height: ${props => props.theme.spacing['8']};
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-gap: ${props => props.theme.spacing['2']};
+    justify-content: center;
   }
 
-  .image-radios {
+  .progress-bar {
+    min-height: ${props => props.theme.spacing['2']};
+    display: block;
+  }
+
+  .image-radio {
     position: relative;
 
     [type='radio'] {
@@ -71,12 +88,39 @@ const FormContainer = styled.form`
       height: 0;
     }
 
-    [type='radio'] + img {
+    img {
+      display: block;
+      width: 100%;
       cursor: pointer;
+      box-shadow: ${props => props.theme.boxShadow.default};
+      border-radius: 5px;
+
+      &:hover {
+        box-shadow: ${props => props.theme.boxShadow.lg};
+      }
     }
 
-    [type='radio']:checked + img {
-      outline: 2px solid red;
+    &.is-selected {
+      img {
+        box-shadow: none;
+      }
+
+      &::after {
+        content: '✓';
+        color: white;
+        background-color: ${props => props.theme.colors.cyan_500};
+        border-radius: ${props => props.theme.radius.full};
+        width: 10px;
+        height: 10px;
+        padding: ${props => props.theme.spacing['3']};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
     }
   }
 `;
@@ -88,7 +132,7 @@ const Error = styled.span`
 
 const ProductSchema = Yup.object().shape({
   title: Yup.string().required('* required'),
-  description: Yup.mixed().test('is-empty', '* Required', value =>
+  description: Yup.mixed().test('is-empty', '* required', value =>
     value.getCurrentContent().hasText()
   ),
 });
@@ -98,8 +142,9 @@ const ImageRadioInputs = props => {
 
   return urls.map((url, i) => {
     const key = `${url}${i}`;
+    const checked = url === value;
     return (
-      <div key={key} className="image-radios">
+      <div key={key} className={`image-radio${checked ? ' is-selected' : ''}`}>
         <label htmlFor={key}>
           <input
             id={key}
@@ -122,16 +167,13 @@ const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
   const [imageOptions, setImageOptions] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
 
   const initialImageUrl = product && product.image_url ? product.image_url : null;
 
-  nprogress.configure({ parent: `.${IMAGE_CONTAINER_CLASS}` });
+  nprogress.configure({ parent: `.progress-bar` });
 
   useEffect(() => {
     if (imageOptions) return;
-
-    setIsFetching(true);
     nprogress.start();
     const numberOfImages = initialImageUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
     const fetchImagePromise = Array(numberOfImages)
@@ -143,16 +185,13 @@ const Form = props => {
     Promise.all(fetchImagePromise).then(imageRes => {
       const fetchedUrls = imageRes.map(res => res.url);
       const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
-      setImageOptions(allUrls);
-      setIsFetching(false);
       nprogress.done();
+      setImageOptions(allUrls);
     });
   }, [imageOptions, initialImageUrl]);
 
   return (
     <>
-      <h1>{product ? 'Edit' : 'New'}</h1>
-
       <Formik
         initialValues={{
           title: product ? product.title : '',
@@ -194,7 +233,6 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
-              {image_url && <img src={image_url} alt="" />}
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
@@ -224,8 +262,8 @@ const Form = props => {
               </label>
               <div className="field-group">
                 <span className="field-label">Image</span>
+                <span className="progress-bar" />
                 <div className={IMAGE_CONTAINER_CLASS}>
-                  {isFetching && 'Fetching Images..'}
                   {imageOptions && (
                     <ImageRadioInputs
                       name="image_url"
