@@ -8,6 +8,7 @@ import Button from './Button';
 import RichTextArea from './RichTextArea';
 
 const NUMBER_OF_IMAGES = 4;
+const IMAGE_CONTAINER_CLASS = 'image-container';
 
 const createEditorStateFromContent = content => {
   let contentState;
@@ -53,6 +54,11 @@ const FormContainer = styled.form`
 
   .field-label {
     color: ${props => props.theme.colors.grey_600};
+  }
+
+  .${IMAGE_CONTAINER_CLASS} {
+    border: 1px solid red;
+    min-height: ${props => props.theme.spacing['8']};
   }
 
   .image-radios {
@@ -214,16 +220,18 @@ const Form = props => {
               </label>
               <div className="field-group">
                 <span className="field-label">Image</span>
-                {isFetching && 'Fetching Images..'}
-                {imageOptions && (
-                  <ImageRadioInputs
-                    name="image_url"
-                    value={image_url}
-                    urls={imageOptions}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                )}
+                <div className={IMAGE_CONTAINER_CLASS}>
+                  {isFetching && 'Fetching Images..'}
+                  {imageOptions && (
+                    <ImageRadioInputs
+                      name="image_url"
+                      value={image_url}
+                      urls={imageOptions}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                  )}
+                </div>
               </div>
               <Button type="submit">Submit</Button>
             </FormContainer>
