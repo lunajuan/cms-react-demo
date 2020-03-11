@@ -71,8 +71,11 @@ const FormContainer = styled.form`
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     grid-gap: ${props => props.theme.spacing['2']};
     justify-content: center;
-    min-height: ${props => props.theme.spacing['8']};
-    padding-top: ${props => props.theme.spacing['2']};
+  }
+
+  .progress-bar {
+    min-height: ${props => props.theme.spacing['2']};
+    display: block;
   }
 
   .image-radio {
@@ -145,16 +148,13 @@ const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
   const [imageOptions, setImageOptions] = useState(null);
-  const [isFetching, setIsFetching] = useState(false);
 
   const initialImageUrl = product && product.image_url ? product.image_url : null;
 
-  nprogress.configure({ parent: `.${IMAGE_CONTAINER_CLASS}` });
+  nprogress.configure({ parent: `.progress-bar` });
 
   useEffect(() => {
     if (imageOptions) return;
-
-    setIsFetching(true);
     nprogress.start();
     const numberOfImages = initialImageUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
     const fetchImagePromise = Array(numberOfImages)
@@ -166,9 +166,8 @@ const Form = props => {
     Promise.all(fetchImagePromise).then(imageRes => {
       const fetchedUrls = imageRes.map(res => res.url);
       const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
-      setImageOptions(allUrls);
-      setIsFetching(false);
       nprogress.done();
+      setImageOptions(allUrls);
     });
   }, [imageOptions, initialImageUrl]);
 
@@ -246,7 +245,8 @@ const Form = props => {
                 />
               </label>
               <div className="field-group">
-                <span className="field-label">Image {isFetching && 'Fetching Images..'}</span>
+                <span className="field-label">Image</span>
+                <span className="progress-bar" />
                 <div className={IMAGE_CONTAINER_CLASS}>
                   {imageOptions && (
                     <ImageRadioInputs
