@@ -202,7 +202,7 @@ const Form = props => {
         }}
         validationSchema={ProductSchema}
         validateOnChange={false}
-        onSubmit={values => {
+        onSubmit={(values, actions) => {
           const { title, description, image_url } = values;
           const id = product ? product.id : (+new Date()).toString();
           const allValues = { id, title, description: description.getCurrentContent(), image_url };
@@ -213,6 +213,7 @@ const Form = props => {
             addProduct(allValues);
           }
 
+          actions.setSubmitting(false);
           browserHistory.push('/');
         }}
       >
