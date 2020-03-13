@@ -167,6 +167,7 @@ const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
   const [imageOptions, setImageOptions] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
 
   const initialImageUrl = product && product.image_url ? product.image_url : null;
 
@@ -174,6 +175,7 @@ const Form = props => {
 
   useEffect(() => {
     if (imageOptions) return;
+    setIsFetching(true);
     nprogress.start();
     const numberOfImages = initialImageUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
     const fetchImagePromise = Array(numberOfImages)
@@ -187,6 +189,7 @@ const Form = props => {
       const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
       nprogress.done();
       setImageOptions(allUrls);
+      setIsFetching(false);
     });
   }, [imageOptions, initialImageUrl]);
 
@@ -202,7 +205,12 @@ const Form = props => {
         }}
         validationSchema={ProductSchema}
         validateOnChange={false}
-        onSubmit={values => {
+        onSubmit={(values, { setSubmitting }) => {
+          if (isFetching) {
+            setSubmitting(false);
+            return;
+          }
+
           const { title, description, image_url } = values;
           const id = product ? product.id : (+new Date()).toString();
           const allValues = { id, title, description: description.getCurrentContent(), image_url };
@@ -278,7 +286,9 @@ const Form = props => {
                   )}
                 </div>
               </div>
-              <Button type="submit">Submit</Button>
+              <Button type="submit" disabled={isSubmitting || isFetching}>
+                Submit
+              </Button>
             </FormContainer>
           );
         }}
