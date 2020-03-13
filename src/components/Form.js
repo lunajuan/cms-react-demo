@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Prompt } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
@@ -138,7 +138,12 @@ const ProductSchema = Yup.object().shape({
 });
 
 const ImageRadioInputs = props => {
-  const { name, urls, value, onChange, onBlur } = props;
+  const { name, urls, value, onChange, onBlur, setFieldValue } = props;
+
+  useEffect(() => {
+    if (value.length || !urls.length) return;
+    setFieldValue(name, urls[0]);
+  }, [name, setFieldValue, urls, value.length]);
 
   return urls.map((url, i) => {
     const key = `${url}${i}`;
@@ -162,11 +167,31 @@ const ImageRadioInputs = props => {
   });
 };
 
+const FocusOnError = props => {
+  const { isValid, isSubmitting, errors, fieldElements } = props;
+  useEffect(() => {
+    if (!isSubmitting || isValid) return;
+
+    const firstErrorKey = Object.keys(errors)[0];
+    const el = fieldElements[firstErrorKey];
+    if (!el) return;
+    el.focus();
+  }, [errors, fieldElements, isSubmitting, isValid]);
+
+  return null;
+};
+
 // pass in id
 const Form = props => {
   const { addProduct, product, editProduct } = props;
   const browserHistory = useHistory();
   const [imageOptions, setImageOptions] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [fetchingErrorMessage, setFetchingErrorMessage] = useState(null);
+  const fieldElements = { title: useRef(), description: useRef() };
+  const setFieldEl = name => el => {
+    fieldElements[name] = el;
+  };
 
   const initialImageUrl = product && product.image_url ? product.image_url : null;
 
@@ -174,6 +199,7 @@ const Form = props => {
 
   useEffect(() => {
     if (imageOptions) return;
+    setIsFetching(true);
     nprogress.start();
     const numberOfImages = initialImageUrl ? NUMBER_OF_IMAGES - 1 : NUMBER_OF_IMAGES;
     const fetchImagePromise = Array(numberOfImages)
@@ -182,12 +208,22 @@ const Form = props => {
         fetch(`https://source.unsplash.com/collection/345710/150x150?sig=${index}`)
       );
 
-    Promise.all(fetchImagePromise).then(imageRes => {
-      const fetchedUrls = imageRes.map(res => res.url);
-      const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
-      nprogress.done();
-      setImageOptions(allUrls);
-    });
+    Promise.all(fetchImagePromise)
+      .then(imageRes => {
+        const fetchedUrls = imageRes.map(res => res.url);
+        const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
+        nprogress.done();
+        setImageOptions(allUrls);
+        setIsFetching(false);
+      })
+      .catch(() => {
+        console.log(
+          '🧹 Swipping image fetching error under the rug. In production use error tracking system.'
+        );
+        nprogress.done();
+        setIsFetching(false);
+        setFetchingErrorMessage('Unable to retrieve images. Please refresh the page.');
+      });
   }, [imageOptions, initialImageUrl]);
 
   return (
@@ -202,7 +238,12 @@ const Form = props => {
         }}
         validationSchema={ProductSchema}
         validateOnChange={false}
-        onSubmit={values => {
+        onSubmit={(values, { setSubmitting }) => {
+          if (isFetching) {
+            setSubmitting(false);
+            return;
+          }
+
           const { title, description, image_url } = values;
           const id = product ? product.id : (+new Date()).toString();
           const allValues = { id, title, description: description.getCurrentContent(), image_url };
@@ -226,6 +267,9 @@ const Form = props => {
             handleBlur,
             setFieldValue,
             setFieldTouched,
+            dirty,
+            isSubmitting,
+            isValid,
           } = props;
 
           const titleInvalid = errors.title && touched.title;
@@ -233,11 +277,19 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
+              <FocusOnError
+                isValid={isValid}
+                isSubmitting={isSubmitting}
+                errors={errors}
+                fieldElements={fieldElements}
+              />
+              <Prompt when={dirty && !isSubmitting} message="Are you sure you want to leave?" />
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
                 </span>
                 <input
+                  ref={setFieldEl('title')}
                   type="text"
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -257,12 +309,14 @@ const Form = props => {
                   setFieldValue={setFieldValue}
                   setFieldTouched={setFieldTouched}
                   charsLimit={500}
+                  setFieldEl={setFieldEl}
                   isInvalid={descriptionInvalid}
                 />
               </label>
               <div className="field-group">
                 <span className="field-label">Image</span>
                 <span className="progress-bar" />
+                {fetchingErrorMessage && <Error>{fetchingErrorMessage}</Error>}
                 <div className={IMAGE_CONTAINER_CLASS}>
                   {imageOptions && (
                     <ImageRadioInputs
@@ -271,11 +325,14 @@ const Form = props => {
                       urls={imageOptions}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      setFieldValue={setFieldValue}
                     />
                   )}
                 </div>
               </div>
-              <Button type="submit">Submit</Button>
+              <Button type="submit" disabled={isSubmitting || isFetching}>
+                Submit
+              </Button>
             </FormContainer>
           );
         }}
