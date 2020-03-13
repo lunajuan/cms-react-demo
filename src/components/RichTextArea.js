@@ -189,7 +189,15 @@ const colorButton = toggle => {
 };
 
 const RichTextArea = props => {
-  const { name, value: editorState, setFieldValue, setFieldTouched, charsLimit, isInvalid } = props;
+  const {
+    name,
+    value: editorState,
+    setFieldValue,
+    setFieldTouched,
+    charsLimit,
+    isInvalid,
+    setFieldEl,
+  } = props;
   const [isFocused, setFocus] = useState(false);
 
   const initialCharsRemaining = editorContentLength(editorState);
@@ -282,6 +290,7 @@ const RichTextArea = props => {
         </div>
       </Controls>
       <Editor
+        ref={setFieldEl('description')}
         editorState={editorState}
         customStyleMap={customColorStyles}
         onChange={onChange}

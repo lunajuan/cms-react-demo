@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useHistory, Prompt } from 'react-router-dom';
 import { Formik } from 'formik';
@@ -162,6 +162,20 @@ const ImageRadioInputs = props => {
   });
 };
 
+const FocusOnError = props => {
+  const { isValid, isSubmitting, errors, fieldElements } = props;
+  useEffect(() => {
+    if (!isSubmitting || isValid) return;
+
+    const firstErrorKey = Object.keys(errors)[0];
+    const el = fieldElements[firstErrorKey];
+    if (!el) return;
+    el.focus();
+  }, [errors, fieldElements, isSubmitting, isValid]);
+
+  return null;
+};
+
 // pass in id
 const Form = props => {
   const { addProduct, product, editProduct } = props;
@@ -169,6 +183,10 @@ const Form = props => {
   const [imageOptions, setImageOptions] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const [fetchingErrorMessage, setFetchingErrorMessage] = useState(null);
+  const fieldElements = { title: useRef(), description: useRef() };
+  const setFieldEl = name => el => {
+    fieldElements[name] = el;
+  };
 
   const initialImageUrl = product && product.image_url ? product.image_url : null;
 
@@ -246,6 +264,7 @@ const Form = props => {
             setFieldTouched,
             dirty,
             isSubmitting,
+            isValid,
           } = props;
 
           const titleInvalid = errors.title && touched.title;
@@ -253,12 +272,19 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
+              <FocusOnError
+                isValid={isValid}
+                isSubmitting={isSubmitting}
+                errors={errors}
+                fieldElements={fieldElements}
+              />
               <Prompt when={dirty && !isSubmitting} message="Are you sure you want to leave?" />
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
                 </span>
                 <input
+                  ref={setFieldEl('title')}
                   type="text"
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -278,6 +304,7 @@ const Form = props => {
                   setFieldValue={setFieldValue}
                   setFieldTouched={setFieldTouched}
                   charsLimit={500}
+                  setFieldEl={setFieldEl}
                   isInvalid={descriptionInvalid}
                 />
               </label>
