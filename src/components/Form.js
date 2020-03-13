@@ -138,7 +138,12 @@ const ProductSchema = Yup.object().shape({
 });
 
 const ImageRadioInputs = props => {
-  const { name, urls, value, onChange, onBlur } = props;
+  const { name, urls, value, onChange, onBlur, setFieldValue } = props;
+
+  useEffect(() => {
+    if (value.length || !urls.length) return;
+    setFieldValue(name, urls[0]);
+  }, [name, setFieldValue, urls, value.length]);
 
   return urls.map((url, i) => {
     const key = `${url}${i}`;
@@ -320,6 +325,7 @@ const Form = props => {
                       urls={imageOptions}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      setFieldValue={setFieldValue}
                     />
                   )}
                 </div>
