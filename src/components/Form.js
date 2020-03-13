@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Prompt } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { EditorState, ContentState, convertFromRaw } from 'draft-js';
@@ -202,7 +202,7 @@ const Form = props => {
         }}
         validationSchema={ProductSchema}
         validateOnChange={false}
-        onSubmit={(values, actions) => {
+        onSubmit={values => {
           const { title, description, image_url } = values;
           const id = product ? product.id : (+new Date()).toString();
           const allValues = { id, title, description: description.getCurrentContent(), image_url };
@@ -213,7 +213,6 @@ const Form = props => {
             addProduct(allValues);
           }
 
-          actions.setSubmitting(false);
           browserHistory.push('/');
         }}
       >
@@ -227,6 +226,8 @@ const Form = props => {
             handleBlur,
             setFieldValue,
             setFieldTouched,
+            dirty,
+            isSubmitting,
           } = props;
 
           const titleInvalid = errors.title && touched.title;
@@ -234,6 +235,7 @@ const Form = props => {
 
           return (
             <FormContainer onSubmit={handleSubmit}>
+              <Prompt when={dirty && !isSubmitting} message="Are you sure you want to leave?" />
               <label htmlFor="title" className="field-group">
                 <span className="field-label">
                   Title{titleInvalid ? <Error>{errors.title}</Error> : null}
