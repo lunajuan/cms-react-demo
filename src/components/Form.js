@@ -168,6 +168,7 @@ const Form = props => {
   const browserHistory = useHistory();
   const [imageOptions, setImageOptions] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
+  const [fetchingErrorMessage, setFetchingErrorMessage] = useState(null);
 
   const initialImageUrl = product && product.image_url ? product.image_url : null;
 
@@ -184,13 +185,22 @@ const Form = props => {
         fetch(`https://source.unsplash.com/collection/345710/150x150?sig=${index}`)
       );
 
-    Promise.all(fetchImagePromise).then(imageRes => {
-      const fetchedUrls = imageRes.map(res => res.url);
-      const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
-      nprogress.done();
-      setImageOptions(allUrls);
-      setIsFetching(false);
-    });
+    Promise.all(fetchImagePromise)
+      .then(imageRes => {
+        const fetchedUrls = imageRes.map(res => res.url);
+        const allUrls = initialImageUrl ? [initialImageUrl, ...fetchedUrls] : fetchedUrls;
+        nprogress.done();
+        setImageOptions(allUrls);
+        setIsFetching(false);
+      })
+      .catch(() => {
+        console.log(
+          '🧹 Swipping image fetching error under the rug. In production use error tracking system.'
+        );
+        nprogress.done();
+        setIsFetching(false);
+        setFetchingErrorMessage('Unable to retrieve images. Please refresh the page.');
+      });
   }, [imageOptions, initialImageUrl]);
 
   return (
@@ -274,6 +284,7 @@ const Form = props => {
               <div className="field-group">
                 <span className="field-label">Image</span>
                 <span className="progress-bar" />
+                {fetchingErrorMessage && <Error>{fetchingErrorMessage}</Error>}
                 <div className={IMAGE_CONTAINER_CLASS}>
                   {imageOptions && (
                     <ImageRadioInputs
