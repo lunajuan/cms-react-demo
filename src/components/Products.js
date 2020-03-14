@@ -65,11 +65,6 @@ const Item = styled.li`
     height: 150px;
   }
 
-  .image-author {
-    display: block;
-    overflow-x: hidden;
-  }
-
   .text {
     padding: ${props => props.theme.spacing['3']};
   }
@@ -105,7 +100,7 @@ const Products = props => {
         {hasProducts ? (
           <List>
             {products.map(product => {
-              const { id, title, description, image_url, image_author, image_author_url } = product;
+              const { id, title, description, image_url } = product;
               return (
                 <Item key={id}>
                   <div>
@@ -114,17 +109,6 @@ const Products = props => {
                       src={image_url || 'https://source.unsplash.com/gJylsVMSf-k/150x150'}
                       alt=""
                     />
-
-                    {image_author && image_author_url ? (
-                      <a
-                        className="image-author"
-                        href={image_author_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <small>{image_author}</small>
-                      </a>
-                    ) : null}
                   </div>
                   <div className="text">
                     <h3>{title}</h3>
