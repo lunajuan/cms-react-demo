@@ -3,7 +3,7 @@ import spacing from './spacing';
 import { fontSize, fontWeight, fontFamily } from './font';
 import boxShadow from './box-shadow';
 
-export default {
+const defaultThemeProps = {
   spacing,
   fontFamily,
   fontSize,
@@ -33,4 +33,14 @@ export default {
     full: '9999px',
   },
   boxShadow,
+};
+
+export const lightTheme = {
+  ...defaultThemeProps,
+  textPrimary: colors.grey_900,
+};
+
+export const darkTheme = {
+  ...defaultThemeProps,
+  textPrimary: colors.grey_050,
 };
