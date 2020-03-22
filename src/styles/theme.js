@@ -38,9 +38,21 @@ const defaultThemeProps = {
 export const lightTheme = {
   ...defaultThemeProps,
   textPrimary: colors.grey_900,
+  buttonStyles: {
+    primary: { fg: colors.indigo_500, bg: 'white' },
+    danger: { fg: colors.red_500, bg: 'white' },
+  },
 };
 
 export const darkTheme = {
   ...defaultThemeProps,
   textPrimary: colors.grey_050,
+  buttonStyles: Object.entries(lightTheme.buttonStyles).reduce(
+    (darkThemeButtons, lightThemeButton) => {
+      const [buttonType, buttonColors] = lightThemeButton;
+      darkThemeButtons[buttonType] = { fg: buttonColors.bg, bg: buttonColors.fg };
+      return darkThemeButtons;
+    },
+    {}
+  ),
 };

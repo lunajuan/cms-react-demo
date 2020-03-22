@@ -1,22 +1,20 @@
 /* eslint-disable camelcase */
 import styled from 'styled-components';
+import propTypes from 'prop-types';
 
-const getColor = props => {
-  const {
-    colors: { indigo_500, red_500 },
-  } = props.theme;
-  const { danger } = props;
+const createColorGetter = colorType => props =>
+  props.theme.buttonStyles[props.buttonStyle][colorType];
 
-  if (danger) return red_500;
-  return indigo_500;
-};
+const getForegroundColor = createColorGetter('fg');
+const getBackgroundColor = createColorGetter('bg');
 
 const Button = styled.button`
   appearance: none;
-  color: ${getColor};
-  border: 1px solid ${getColor};
+  color: ${props => getForegroundColor(props)};
+  border: 1px solid ${props => getForegroundColor(props)};
   padding: ${props => props.theme.spacing['1']} ${props => props.theme.spacing['2']};
   font-size: ${props => props.theme.fontSize.lg};
+  background-color: ${props => getBackgroundColor(props)};
   border-radius: 5px;
   &:hover {
     cursor: pointer;
@@ -27,5 +25,12 @@ const Button = styled.button`
     box-shadow: ${props => props.theme.boxShadow.outline};
   }
 `;
+Button.defaultProps = {
+  buttonStyle: 'primary',
+};
+
+Button.propTypes = {
+  buttonStyle: propTypes.oneOf(['primary', 'danger']),
+};
 
 export default Button;
