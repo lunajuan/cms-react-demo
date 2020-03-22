@@ -129,7 +129,11 @@ const Products = props => {
                     <Link to={`/product/edit/${id}`}>
                       <Button className="control">Edit</Button>
                     </Link>
-                    <Button className="control" danger onClick={() => removeProduct(product)}>
+                    <Button
+                      className="control"
+                      buttonStyle="danger"
+                      onClick={() => removeProduct(product)}
+                    >
                       Delete
                     </Button>
                   </div>
