@@ -8,7 +8,6 @@ const defaultThemeProps = {
   fontFamily,
   fontSize,
   fontWeight,
-  colors,
   letterSpacing: {
     tighter: '-0.05em',
     tight: '-0.025em',
@@ -41,7 +40,23 @@ export const lightTheme = {
   body: colors.grey_100,
   bodyBorder: colors.grey_500,
   bodyImageFill: colors.grey_300.replace('#', '%23'),
-  textPrimary: colors.grey_900,
+  placeholderBg: colors.grey_200,
+  background: {
+    success: colors.cyan_500,
+    muted: colors.grey_600,
+  },
+  text: {
+    primary: colors.grey_900,
+    secondary: colors.grey_800,
+    muted: colors.grey_600,
+    danger: colors.red_400,
+  },
+  border: {
+    default: colors.grey_500,
+    light: colors.grey_100,
+    danger: colors.red_400,
+  },
+  link: colors.indigo_300,
   buttonStyles: {
     primary: { fg: colors.indigo_500, bg: 'white' },
     danger: { fg: colors.red_500, bg: 'white' },

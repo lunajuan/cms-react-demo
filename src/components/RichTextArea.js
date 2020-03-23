@@ -7,7 +7,7 @@ import colors from '../styles/colors';
 const EditorWrapper = styled.div`
   .DraftEditor-root {
     appearance: none;
-    border: 1px solid ${props => props.theme.colors.grey_100};
+    border: 1px solid ${props => props.theme.border.light};
     border-radius: 5px;
     color: inherit;
     display: block;
@@ -26,7 +26,7 @@ const EditorWrapper = styled.div`
   &.is-invalid {
     .DraftEditor-root {
       border-width: 1px;
-      border-color: ${props => props.theme.colors.red_400};
+      border-color: ${props => props.theme.border.danger};
     }
   }
 
@@ -47,8 +47,7 @@ const Controls = styled.div`
 
   .default-button {
     appearance: none;
-    color: ${props => props.theme.colors.grey_700};
-    border: 1px solid ${props => props.theme.colors.grey_700};
+    border: 1px solid ${props => props.theme.border.default};
     padding: ${props => props.theme.spacing['1']};
     font-size: ${props => props.theme.fontSize.xs};
     font-weight: ${props => props.theme.fontWeight.bold};
@@ -58,7 +57,7 @@ const Controls = styled.div`
     &:hover,
     &.is-active {
       color: white;
-      background-color: ${props => props.theme.colors.grey_700};
+      background-color: ${props => props.theme.background.muted};
     }
   }
 

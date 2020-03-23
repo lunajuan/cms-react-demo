@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   html {
-    color: ${props => props.theme.textPrimary};
+    color: ${props => props.theme.text.primary};
     background-color: ${props => props.theme.html};
     border-bottom: 1px solid ${props => props.theme.bodyBorder};
     border-top: 1px solid ${props => props.theme.bodyBorder};
@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
   }
   a {
     text-decoration: none;
-    color: ${props => props.theme.colors.cyan_600};
+    color: ${props => props.theme.link};
   }
 
   h1,
