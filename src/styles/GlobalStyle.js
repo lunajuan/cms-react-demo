@@ -3,9 +3,9 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyle = createGlobalStyle`
   html {
     color: ${props => props.theme.textPrimary};
-    background-color: ${props => props.theme.colors.indigo_050};
-    border-bottom: 1px solid ${props => props.theme.colors.indigo_200};
-    border-top: 1px solid ${props => props.theme.colors.indigo_200};
+    background-color: ${props => props.theme.html};
+    border-bottom: 1px solid ${props => props.theme.bodyBorder};
+    border-top: 1px solid ${props => props.theme.bodyBorder};
     box-sizing: border-box;
     font-size: 10px;
     font-family: ${props => props.theme.fontFamily.sans};
