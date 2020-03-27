@@ -5,6 +5,7 @@ import useDarkMode from './hooks/useDarkMode';
 import { lightTheme, darkTheme } from './styles/theme';
 import ThemeToggle from './components/ThemeToggle';
 import GlobalStyle from './styles/GlobalStyle';
+import Background from './styles/Background';
 import { FlashProvider } from './components/FlashContext';
 import Container from './components/Container';
 import ProductRoutes from './ProductRoutes';
@@ -21,10 +22,12 @@ const App = () => {
     <ThemeProvider theme={themeMode}>
       <GlobalStyle />
       <FlashProvider>
-        <Container>
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-          <ProductRoutes />
-        </Container>
+        <Background>
+          <Container>
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <ProductRoutes />
+          </Container>
+        </Background>
       </FlashProvider>
     </ThemeProvider>
   );
