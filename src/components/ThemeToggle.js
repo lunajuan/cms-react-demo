@@ -10,14 +10,21 @@ const ToggleContainer = styled.button`
   margin: ${props => props.theme.spacing['3']} 0;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const ThemeToggle = props => {
   const { theme, toggleTheme } = props;
   const isLight = theme === 'light';
 
   return (
-    <ToggleContainer type="button" onClick={toggleTheme}>
-      <strong>{isLight ? 'Dark' : 'Light'}</strong> Mode
-    </ToggleContainer>
+    <Wrapper>
+      <ToggleContainer type="button" onClick={toggleTheme}>
+        <strong>{isLight ? 'Dark' : 'Light'}</strong> Mode
+      </ToggleContainer>
+    </Wrapper>
   );
 };
 
