@@ -79,6 +79,25 @@ export const lightTheme = {
 export const darkTheme = {
   ...defaultThemeProps,
   html: colors.grey_900,
-  textPrimary: colors.grey_050,
+  body: colors.grey_200,
+  bodyBorder: colors.grey_500,
+  bodyImageFill: colors.grey_300.replace('#', '%23'),
+  placeholderBg: colors.grey_200,
+  background: {
+    success: colors.cyan_500,
+    muted: colors.grey_600,
+  },
+  text: {
+    primary: colors.grey_100,
+    secondary: colors.grey_200,
+    muted: colors.grey_500,
+    danger: colors.red_400,
+  },
+  border: {
+    default: colors.grey_500,
+    light: colors.grey_900,
+    danger: colors.red_400,
+  },
+  link: colors.indigo_300,
   buttonStyles: reversePropsProps(lightTheme.buttonStyles, ['fg', 'bg']),
 };
