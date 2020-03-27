@@ -3,6 +3,19 @@ import spacing from './spacing';
 import { fontSize, fontWeight, fontFamily } from './font';
 import boxShadow from './box-shadow';
 
+const reversePropsProps = (props, nestedPropsToSwap) => {
+  return Object.entries(props).reduce((reversed, [propName, nestedProps]) => {
+    const [nestedPropName1, nestedPropName2] = nestedPropsToSwap;
+    const newReverse = reversed;
+    newReverse[propName] = {
+      [nestedPropName1]: nestedProps[nestedPropName2],
+      [nestedPropName2]: nestedProps[nestedPropName1],
+    };
+
+    return newReverse;
+  }, {});
+};
+
 const defaultThemeProps = {
   spacing,
   fontFamily,
@@ -67,12 +80,5 @@ export const darkTheme = {
   ...defaultThemeProps,
   html: colors.grey_900,
   textPrimary: colors.grey_050,
-  buttonStyles: Object.entries(lightTheme.buttonStyles).reduce(
-    (darkThemeButtons, lightThemeButton) => {
-      const [buttonType, buttonColors] = lightThemeButton;
-      darkThemeButtons[buttonType] = { fg: buttonColors.bg, bg: buttonColors.fg };
-      return darkThemeButtons;
-    },
-    {}
-  ),
+  buttonStyles: reversePropsProps(lightTheme.buttonStyles, ['fg', 'bg']),
 };
