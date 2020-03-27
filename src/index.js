@@ -6,8 +6,9 @@ import { lightTheme, darkTheme } from './styles/theme';
 import ThemeToggle from './components/ThemeToggle';
 import GlobalStyle from './styles/GlobalStyle';
 import Background from './styles/Background';
+import Container from './styles/Container';
 import { FlashProvider } from './components/FlashContext';
-import Container from './components/Container';
+import Content from './components/Content';
 import ProductRoutes from './ProductRoutes';
 
 const App = () => {
@@ -23,9 +24,11 @@ const App = () => {
       <GlobalStyle />
       <FlashProvider>
         <Background>
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           <Container>
-            <ProductRoutes />
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <Content>
+              <ProductRoutes />
+            </Content>
           </Container>
         </Background>
       </FlashProvider>
