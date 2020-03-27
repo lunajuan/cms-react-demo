@@ -23,8 +23,8 @@ const App = () => {
       <GlobalStyle />
       <FlashProvider>
         <Background>
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
           <Container>
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
             <ProductRoutes />
           </Container>
         </Background>
