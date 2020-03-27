@@ -3,7 +3,11 @@ import styled from 'styled-components';
 
 const ToggleContainer = styled.button`
   appearance: none;
-  border: 2px solid red;
+  border: 1px solid ${props => props.theme.border.default};
+  padding: ${props => props.theme.spacing['2']} ${props => props.theme.spacing['4']};
+  border-radius: ${props => props.theme.radius.full};
+  cursor: pointer;
+  margin: ${props => props.theme.spacing['3']} 0;
 `;
 
 const ThemeToggle = props => {
@@ -12,7 +16,7 @@ const ThemeToggle = props => {
 
   return (
     <ToggleContainer type="button" onClick={toggleTheme}>
-      {isLight ? 'Dark Mode' : 'Light Mode'}
+      <strong>{isLight ? 'Dark' : 'Light'}</strong> Mode
     </ToggleContainer>
   );
 };
