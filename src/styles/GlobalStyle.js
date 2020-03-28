@@ -2,7 +2,8 @@ import { css, createGlobalStyle } from 'styled-components';
 
 export const baseInputStyles = css`
   appearance: none;
-  border: 1px solid ${props => props.theme.border.light};
+  background: ${props => props.theme.contentBg};
+  border: 1px solid ${props => props.theme.border.default};
   border-radius: 5px;
   color: inherit;
   display: block;
@@ -66,7 +67,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     &.is-invalid {
-      ${baseInputFocus}
+      ${baseInputInvalid}
     }
   }
 `;

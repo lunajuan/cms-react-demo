@@ -64,7 +64,7 @@ export const lightTheme = {
     danger: colors.red_400,
   },
   border: {
-    default: colors.grey_500,
+    default: colors.grey_200,
     light: colors.grey_100,
     danger: colors.red_400,
   },
@@ -92,8 +92,8 @@ export const darkTheme = {
     danger: colors.red_400,
   },
   border: {
-    default: colors.grey_500,
-    light: colors.grey_900,
+    default: colors.grey_700,
+    light: colors.grey_800,
     danger: colors.red_400,
   },
   link: colors.indigo_300,
