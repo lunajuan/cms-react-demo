@@ -50,10 +50,8 @@ const defaultThemeProps = {
 export const lightTheme = {
   ...defaultThemeProps,
   html: colors.grey_700,
-  body: colors.indigo_100,
-  bodyBorder: colors.indigo_500,
-  bodyImageFill: colors.indigo_300.replace('#', '%23'),
-  placeholderBg: colors.grey_200,
+  texturedBg: colors.indigo_100,
+  textureFill: colors.indigo_300.replace('#', '%23'),
   background: {
     success: colors.cyan_500,
     muted: colors.grey_600,
@@ -79,10 +77,8 @@ export const lightTheme = {
 export const darkTheme = {
   ...defaultThemeProps,
   html: colors.grey_900,
-  body: colors.grey_900,
-  bodyBorder: colors.grey_500,
-  bodyImageFill: colors.grey_800.replace('#', '%23'),
-  placeholderBg: colors.grey_200,
+  texturedBg: colors.grey_900,
+  textureFill: colors.grey_800.replace('#', '%23'),
   background: {
     success: colors.cyan_500,
     muted: colors.grey_600,

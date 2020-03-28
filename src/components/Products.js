@@ -60,7 +60,7 @@ const Item = styled.li`
   }
 
   .image {
-    background-color: ${props => props.theme.placeholderBg};
+    background-color: ${props => props.theme.muted};
     width: 150px;
     height: 150px;
   }
