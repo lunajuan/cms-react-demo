@@ -52,6 +52,7 @@ export const lightTheme = {
   html: colors.grey_700,
   texturedBg: colors.indigo_100,
   textureFill: colors.indigo_300.replace('#', '%23'),
+  contentBg: 'white',
   background: {
     success: colors.cyan_500,
     muted: colors.grey_600,
@@ -77,8 +78,9 @@ export const lightTheme = {
 export const darkTheme = {
   ...defaultThemeProps,
   html: colors.grey_900,
-  texturedBg: colors.grey_900,
-  textureFill: colors.grey_800.replace('#', '%23'),
+  texturedBg: colors.grey_800,
+  textureFill: colors.grey_600.replace('#', '%23'),
+  contentBg: colors.grey_900,
   background: {
     success: colors.cyan_500,
     muted: colors.grey_600,
