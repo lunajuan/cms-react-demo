@@ -49,10 +49,10 @@ const defaultThemeProps = {
 
 export const lightTheme = {
   ...defaultThemeProps,
-  html: colors.grey_900,
-  body: colors.grey_100,
-  bodyBorder: colors.grey_500,
-  bodyImageFill: colors.grey_300.replace('#', '%23'),
+  html: colors.grey_700,
+  body: colors.indigo_100,
+  bodyBorder: colors.indigo_500,
+  bodyImageFill: colors.indigo_300.replace('#', '%23'),
   placeholderBg: colors.grey_200,
   background: {
     success: colors.cyan_500,
@@ -79,9 +79,9 @@ export const lightTheme = {
 export const darkTheme = {
   ...defaultThemeProps,
   html: colors.grey_900,
-  body: colors.grey_200,
+  body: colors.grey_900,
   bodyBorder: colors.grey_500,
-  bodyImageFill: colors.grey_300.replace('#', '%23'),
+  bodyImageFill: colors.grey_800.replace('#', '%23'),
   placeholderBg: colors.grey_200,
   background: {
     success: colors.cyan_500,
