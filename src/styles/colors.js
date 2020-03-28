@@ -12,16 +12,16 @@ export default {
   cyan_900: '#044E54',
 
   // Neutrals
-  grey_050: '#F0F4F8',
-  grey_100: '#D9E2EC',
-  grey_200: '#BCCCDC',
-  grey_300: '#9FB3C8',
-  grey_400: '#829AB1',
-  grey_500: '#627D98',
-  grey_600: '#486581',
-  grey_700: '#334E68',
-  grey_800: '#243B53',
-  grey_900: '#102A43',
+  grey_050: '#F5F7FA',
+  grey_100: '#E4E7EB',
+  grey_200: '#CBD2D9',
+  grey_300: '#9AA5B1',
+  grey_400: '#7B8794',
+  grey_500: '#616E7C',
+  grey_600: '#52606D',
+  grey_700: '#3E4C59',
+  grey_800: '#323F4B',
+  grey_900: '#1F2933',
 
   // Supporting
   indigo_050: '#E0E8F9',
