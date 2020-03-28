@@ -70,5 +70,23 @@ const GlobalStyle = createGlobalStyle`
       ${baseInputInvalid}
     }
   }
+
+  button {
+    appearance: none;
+    background-color: ${props => props.theme.contentBg};
+    color: ${props => props.theme.text.primary};
+    border: 1px solid ${props => props.theme.border.default};
+    font-size: ${props => props.theme.fontSize.lg};
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:focus {
+      outline: 0;
+      box-shadow: ${props => props.theme.boxShadow.outline};
+    }
+  }
 `;
 export default GlobalStyle;
