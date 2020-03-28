@@ -88,7 +88,7 @@ export const darkTheme = {
   text: {
     primary: colors.grey_100,
     secondary: colors.grey_200,
-    muted: colors.grey_500,
+    muted: colors.grey_400,
     danger: colors.red_400,
   },
   border: {
