@@ -25,29 +25,6 @@ const createEditorStateFromContent = content => {
 };
 
 const FormContainer = styled.form`
-  input,
-  textarea {
-    appearance: none;
-    border: 1px solid ${props => props.theme.border.light};
-    border-radius: 5px;
-    padding: 0;
-    line-height: inherit;
-    color: inherit;
-    display: block;
-    width: 100%;
-    padding: ${props => props.theme.spacing['2']} ${props => props.theme.spacing['3']};
-
-    &:focus {
-      outline: none;
-      box-shadow: ${props => props.theme.boxShadow.outline};
-    }
-
-    &.is-invalid {
-      border-width: 1px;
-      border-color: ${props => props.theme.border.danger};
-    }
-  }
-
   .image-preview {
     margin: ${props => props.theme.spacing['6']} 0;
     display: block;

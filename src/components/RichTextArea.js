@@ -1,32 +1,24 @@
 import React, { useState, useCallback } from 'react';
 import { Editor, EditorState, RichUtils, Modifier } from 'draft-js';
 import styled from 'styled-components';
+import { baseInputStyles, baseInputFocus, baseInputInvalid } from '../styles/GlobalStyle';
 import CharLimit from './CharLimit';
 import colors from '../styles/colors';
 
 const EditorWrapper = styled.div`
   .DraftEditor-root {
-    appearance: none;
-    border: 1px solid ${props => props.theme.border.light};
-    border-radius: 5px;
-    color: inherit;
-    display: block;
-    line-height: inherit;
-    resize: none;
-    width: 100%;
-    padding: ${props => props.theme.spacing['2']} ${props => props.theme.spacing['3']};
+    ${baseInputStyles}
   }
 
   &.is-focused {
     .DraftEditor-root {
-      box-shadow: ${props => props.theme.boxShadow.outline};
+      ${baseInputFocus}
     }
   }
 
   &.is-invalid {
     .DraftEditor-root {
-      border-width: 1px;
-      border-color: ${props => props.theme.border.danger};
+      ${baseInputInvalid}
     }
   }
 

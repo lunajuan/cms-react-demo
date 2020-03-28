@@ -1,4 +1,24 @@
-import { createGlobalStyle } from 'styled-components';
+import { css, createGlobalStyle } from 'styled-components';
+
+export const baseInputStyles = css`
+  appearance: none;
+  border: 1px solid ${props => props.theme.border.light};
+  border-radius: 5px;
+  color: inherit;
+  display: block;
+  line-height: inherit;
+  width: 100%;
+  padding: ${props => props.theme.spacing['2']} ${props => props.theme.spacing['3']};
+`;
+
+export const baseInputFocus = css`
+  box-shadow: ${props => props.theme.boxShadow.outline};
+`;
+
+export const baseInputInvalid = css`
+  border-width: 1px;
+  border-color: ${props => props.theme.border.danger};
+`;
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -36,6 +56,18 @@ const GlobalStyle = createGlobalStyle`
     font-family: ${props => props.theme.fontFamily.mono}
   }
 
-`;
+  input,
+  textarea {
+    ${baseInputStyles}
 
+    &:focus {
+      outline: none;
+      ${baseInputFocus}
+    }
+
+    &.is-invalid {
+      ${baseInputFocus}
+    }
+  }
+`;
 export default GlobalStyle;
