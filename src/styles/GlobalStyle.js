@@ -4,8 +4,6 @@ const GlobalStyle = createGlobalStyle`
   html {
     color: ${props => props.theme.text.primary};
     background-color: ${props => props.theme.html};
-    border-bottom: 1px solid ${props => props.theme.default};
-    border-top: 1px solid ${props => props.theme.default};
     box-sizing: border-box;
     font-size: 10px;
     font-family: ${props => props.theme.fontFamily.sans};
