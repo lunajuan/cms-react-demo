@@ -10,16 +10,21 @@ const Main = styled.main`
 
   .heading {
     text-align: center;
-    margin-bottom: 0;
+    margin: ${props => props.theme.spacing['3']} 0;
   }
 
   .sub-heading {
     text-align: center;
-    margin-top: 0;
+    margin: ${props => props.theme.spacing['3']} 0;
+    color: ${props => props.theme.text.secondary};
   }
 `;
 
-const Header = styled.header``;
+const Header = styled.header`
+  position: relative;
+  border-bottom: 1px solid ${props => props.theme.border.default};
+  margin-bottom: ${props => props.theme.spacing['8']};
+`;
 
 const Content = props => {
   const { children } = props;
@@ -27,7 +32,9 @@ const Content = props => {
   return (
     <Main>
       <Header>
-        <h1 className="heading">Mini React CMS Demo</h1>
+        <h1 className="heading">
+          CMS React <em>Demo</em>
+        </h1>
         <p className="sub-heading">Rich Text Editor</p>
       </Header>
 
