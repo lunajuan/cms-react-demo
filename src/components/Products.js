@@ -15,13 +15,19 @@ const parseRichText = (content, inlineStyles) => {
   return stateToHTML(contentState, options);
 };
 
-const Section = styled.div`
-  .controls {
-    text-align: center;
+const ProductsSection = styled.section`
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-`;
 
-const ProductsSection = styled.div`
+  .controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
   small {
     display: block;
   }
@@ -40,8 +46,23 @@ const List = styled.ul`
 const Item = styled.li`
   display: grid;
   grid-template-columns: 150px 1fr;
+  grid-template-areas:
+    'image title'
+    'image controls'
+    'description description';
+  grid-gap: ${props => props.theme.spacing['4']};
   box-shadow: ${props => props.theme.boxShadow.default};
-  padding: ${props => props.theme.spacing['3']} ${props => props.theme.spacing['4']};
+  padding: ${props => props.theme.spacing['4']};
+  margin: ${props => props.theme.spacing['4']} 0;
+
+  @media (min-width: 700px) {
+    grid-gap: ${props => props.theme.spacing['8']};
+
+    grid-template-areas:
+      'image title'
+      'image description'
+      'image controls';
+  }
 
   h3 {
     margin: 0 0 ${props => props.theme.spacing['2']};
@@ -50,20 +71,42 @@ const Item = styled.li`
   p {
     margin: 0;
   }
+  .image-container {
+    grid-area: image;
+    justify-self: end;
+  }
 
   .image {
+    display: block;
     background-color: ${props => props.theme.muted};
     width: 150px;
     height: 150px;
   }
 
-  .text {
-    padding: ${props => props.theme.spacing['3']};
+  .title {
+    grid-area: title;
+    display: flex;
+    align-items: flex-end;
+    font-size: ${props => props.theme.fontSize['2xl']};
+
+    @media (min-width: 700px) {
+      display: block;
+    }
+  }
+
+  .description {
+    grid-area: description;
   }
 
   .controls {
-    text-align: right;
-    grid-column-start: 2;
+    grid-area: controls;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    @media (min-width: 700px) {
+      justify-content: flex-end;
+    }
   }
 
   .control {
@@ -83,68 +126,67 @@ const Products = props => {
   const hasProducts = products && products.length > 0;
 
   return (
-    <Section>
-      <div className="controls">
-        <Button to="/product/new">Add Product</Button>
-      </div>
+    <ProductsSection>
+      <header className="section-header">
+        <h2 className="heading">All Products</h2>
+        <div className="controls">
+          <Button to="/product/new">
+            <b>+</b> Add Product
+          </Button>
+        </div>
+      </header>
 
-      {/* list of existing products */}
-      <ProductsSection>
-        <h2 className="heading">Products</h2>
-
-        {hasProducts ? (
-          <List>
-            {products.map(product => {
-              const { id, title, description, image_url } = product;
-              return (
-                <Item key={id}>
-                  <div>
-                    <img
-                      className="image"
-                      src={image_url || 'https://source.unsplash.com/gJylsVMSf-k/150x150'}
-                      alt=""
-                    />
-                  </div>
-                  <div className="text">
-                    <h3>{title}</h3>
-                    {typeof description === 'string' ? (
-                      <p>{description}</p>
-                    ) : (
-                      <div
-                        // if we didn't trust the html string then we would sanitize
-                        //   here or before saving the data.
-                        //   eslint-disable-next-line react/no-danger
-                        dangerouslySetInnerHTML={{
-                          __html: parseRichText(description, inlineStyles),
-                        }}
-                      />
-                    )}
-                  </div>
-                  <div className="controls">
-                    <Button className="control" to={`/product/edit/${id}`} buttonStyle="muted">
-                      Edit
-                    </Button>
-                    <Button
-                      className="control"
-                      buttonStyle="danger"
-                      onClick={() => removeProduct(product)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </Item>
-              );
-            })}
-          </List>
-        ) : (
-          <div className="message">
-            <p>
-              No Product, Yet! <small>Add new a new product!</small>
-            </p>
-          </div>
-        )}
-      </ProductsSection>
-    </Section>
+      {hasProducts ? (
+        <List>
+          {products.map(product => {
+            const { id, title, description, image_url } = product;
+            return (
+              <Item key={id}>
+                <div className="image-container">
+                  <img
+                    className="image"
+                    src={image_url || 'https://source.unsplash.com/gJylsVMSf-k/150x150'}
+                    alt=""
+                  />
+                </div>
+                <h3 className="title">{title}</h3>
+                {typeof description === 'string' ? (
+                  <p className="description">{description}</p>
+                ) : (
+                  <div
+                    className="description"
+                    // if we didn't trust the html string then we would sanitize
+                    //   here or before saving the data.
+                    //   eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={{
+                      __html: parseRichText(description, inlineStyles),
+                    }}
+                  />
+                )}
+                <div className="controls">
+                  <Button className="control" to={`/product/edit/${id}`} buttonStyle="muted">
+                    Edit
+                  </Button>
+                  <Button
+                    className="control"
+                    buttonStyle="danger"
+                    onClick={() => removeProduct(product)}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </Item>
+            );
+          })}
+        </List>
+      ) : (
+        <div className="message">
+          <p>
+            No Product, Yet! <small>Add new a new product!</small>
+          </p>
+        </div>
+      )}
+    </ProductsSection>
   );
 };
 
