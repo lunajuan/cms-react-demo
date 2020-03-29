@@ -3,24 +3,24 @@ import React from 'react';
 import styled from 'styled-components';
 import { convertFromRaw } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
+import useCustomEditorStyles from '../hooks/useCustomEditorStyles';
 import Button from './Button';
-import { colorStyles } from './RichTextArea';
 
-const parseContentState = contentState => {
+const parseContentState = (contentState, customInlineStyles) => {
   const options = {
-    inlineStyles: colorStyles.reduce((map, styleProps) => {
+    inlineStyles: customInlineStyles.reduce((map, { styleName, style }) => {
       const updatedMap = map;
-      const { styleName, style } = styleProps;
       updatedMap[styleName] = { style };
       return updatedMap;
     }, {}),
   };
-
   return stateToHTML(contentState, options);
 };
 
-const parseRichText = content =>
-  content.blocks ? parseContentState(convertFromRaw(content)) : parseContentState(content);
+const parseRichText = (content, customInlineStyles) =>
+  content.blocks
+    ? parseContentState(convertFromRaw(content), customInlineStyles)
+    : parseContentState(content, customInlineStyles);
 
 const Section = styled.div`
   .controls {
@@ -82,6 +82,8 @@ const Item = styled.li`
 
 const Products = props => {
   const { products, removeProduct } = props;
+  const { textColorStyles } = useCustomEditorStyles();
+
   const hasProducts = products && products.length > 0;
 
   return (
@@ -117,7 +119,7 @@ const Products = props => {
                         //   here or before saving the data.
                         //   eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={{
-                          __html: parseRichText(description),
+                          __html: parseRichText(description, textColorStyles),
                         }}
                       />
                     )}

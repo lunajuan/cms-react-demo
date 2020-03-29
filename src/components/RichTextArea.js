@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { Editor, EditorState, RichUtils, Modifier } from 'draft-js';
 import styled from 'styled-components';
+import useCustomEditorStyles from '../hooks/useCustomEditorStyles';
 import { baseInputStyles, baseInputFocus, baseInputInvalid } from '../styles/GlobalStyle';
 import CharLimit from './CharLimit';
-import colors from '../styles/colors';
 
 const EditorWrapper = styled.div`
   .DraftEditor-root {
@@ -98,30 +98,19 @@ const blockStyles = [
   },
 ];
 
-// Color inline styles are mutually exclusive. Meaning they can't exist at the
-// same time so enabling one should disable all others.
-export const colorStyles = [
-  { label: 'Indigo 500', styleName: 'indigo_500', style: { color: colors.indigo_500 } },
-  { label: 'Red 500', styleName: 'red_500', style: { color: colors.red_500 } },
-  { label: 'Grey 900', styleName: 'grey_900', style: { color: colors.grey_900 } },
-  { label: 'Grey 800', styleName: 'grey_800', style: { color: colors.grey_800 } },
-  { label: 'Grey 700', styleName: 'grey_700', style: { color: colors.grey_700 } },
-  { label: 'Grey 600', styleName: 'grey_600', style: { color: colors.grey_600 } },
-  { label: 'Grey 500', styleName: 'grey_500', style: { color: colors.grey_500 } },
-  { label: 'Grey 400', styleName: 'grey_400', style: { color: colors.grey_400 } },
-  { label: 'Grey 300', styleName: 'grey_300', style: { color: colors.grey_300 } },
-  { label: 'Grey 200', styleName: 'grey_200', style: { color: colors.grey_200 } },
-  { label: 'Grey 100', styleName: 'grey_100', style: { color: colors.grey_100 } },
-];
-
-// We'll need some custom styles to register with draft. In my case I only need
-// colors so we'll use the colorStyles to build the custom style map.
-// https://draftjs.org/docs/advanced-topics-inline-styles#mapping-a-style-string-to-css
-const customColorStyles = colorStyles.reduce((map, { styleName, style }) => {
-  const updatedMap = map;
-  updatedMap[styleName] = style;
-  return updatedMap;
-}, {});
+/**
+ * Get map of custom styles to register with draft. We'll need some custom
+ * styles to register with draft. In my case I only need colors so we'll use the
+ * colorStyles to build the custom.
+ * https://draftjs.org/docs/advanced-topics-inline-styles#mapping-a-style-string-to-css
+ * @param {Array} styles
+ */
+const getCustomStyleMap = styles =>
+  styles.reduce((map, { styleName, style }) => {
+    const updatedMap = map;
+    updatedMap[styleName] = style;
+    return updatedMap;
+  }, {});
 
 const editorContentLength = draftEditorState =>
   draftEditorState.getCurrentContent().getPlainText().length;
@@ -135,8 +124,14 @@ const getCurrentBlockStyle = draftEditorState => {
     .getType();
 };
 
-const controlButtons = (styles, toggle, currentStyles) => {
-  return styles.map(styleProps => {
+/**
+ *
+ * @param {*} styles
+ * @param {*} toggleFn
+ * @param {*} currentStyles
+ */
+const getControlButtons = (styles, toggleFn, currentStyles) =>
+  styles.map(styleProps => {
     const { label, styleName, style } = styleProps;
     const isActive =
       typeof currentStyles === 'string'
@@ -150,30 +145,34 @@ const controlButtons = (styles, toggle, currentStyles) => {
         className={`default-button${isActive ? ' is-active' : ''}`}
         onClick={e => {
           e.preventDefault();
-          toggle(styleName);
+          toggleFn(styleName);
         }}
       >
         {label}
       </button>
     );
   });
-};
 
-const colorButton = toggle => {
-  return colorStyles.map(styleProps => {
-    const { label, styleName, style } = styleProps;
+/**
+ *
+ * @param {*} styles
+ * @param {*} toggleFn
+ */
+const getColorButtons = (styles, toggleFn) => {
+  return styles.map(styleProps => {
+    const { styleName, style } = styleProps;
     return (
       <button
-        key={label}
+        key={styleName}
         type="button"
         className="color-button"
         style={{ backgroundColor: style.color }}
         onClick={e => {
           e.preventDefault();
-          toggle(styleName);
+          toggleFn(styleName);
         }}
       >
-        {label}
+        {styleName}
       </button>
     );
   });
@@ -190,6 +189,7 @@ const RichTextArea = props => {
     setFieldEl,
   } = props;
   const [isFocused, setFocus] = useState(false);
+  const { textColorStyles } = useCustomEditorStyles();
 
   const initialCharsRemaining = editorContentLength(editorState);
   const [remainingChars, setRemainingChars] = useState(charsLimit - initialCharsRemaining);
@@ -243,7 +243,7 @@ const RichTextArea = props => {
 
       // modifie the contentState by removing all inline styles
       const currentContentState = editorState.getCurrentContent();
-      const nextContentState = colorStyles.reduce((contentState, style) => {
+      const nextContentState = textColorStyles.reduce((contentState, style) => {
         return Modifier.removeInlineStyle(contentState, selection, style.styleName);
       }, currentContentState);
 
@@ -262,7 +262,7 @@ const RichTextArea = props => {
 
       onChange(nextEditorState);
     },
-    [editorState, onChange]
+    [editorState, onChange, textColorStyles]
   );
 
   const wrapperClasses = [];
@@ -274,16 +274,20 @@ const RichTextArea = props => {
       <Controls>
         <div className="buttons">
           <div className="default-buttons">
-            {controlButtons(inlineStyles, toggleInlineStyle, getCurrentInlineStyles(editorState))}
-            {controlButtons(blockStyles, toogleBlockType, getCurrentBlockStyle(editorState))}
+            {getControlButtons(
+              inlineStyles,
+              toggleInlineStyle,
+              getCurrentInlineStyles(editorState)
+            )}
+            {getControlButtons(blockStyles, toogleBlockType, getCurrentBlockStyle(editorState))}
           </div>
-          <div className="color-buttons"> {colorButton(toggleColorStyle)}</div>
+          <div className="color-buttons"> {getColorButtons(textColorStyles, toggleColorStyle)}</div>
         </div>
       </Controls>
       <Editor
         ref={setFieldEl('description')}
         editorState={editorState}
-        customStyleMap={customColorStyles}
+        customStyleMap={getCustomStyleMap(textColorStyles)}
         onChange={onChange}
         handleKeyCommand={handleKeyCommand}
         onFocus={onFocus}
