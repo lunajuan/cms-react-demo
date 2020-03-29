@@ -123,7 +123,7 @@ const Products = props => {
                     )}
                   </div>
                   <div className="controls">
-                    <Button className="control" to={`/product/edit/${id}`}>
+                    <Button className="control" to={`/product/edit/${id}`} buttonStyle="muted">
                       Edit
                     </Button>
                     <Button

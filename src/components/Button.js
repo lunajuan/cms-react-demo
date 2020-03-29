@@ -50,7 +50,7 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-  buttonStyle: propTypes.oneOf(['primary', 'danger']),
+  buttonStyle: propTypes.oneOf(['primary', 'secondary', 'muted', 'danger']),
 };
 
 export default Button;
