@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { convertFromRaw } from 'draft-js';
 import { stateToHTML } from 'draft-js-export-html';
@@ -88,9 +87,7 @@ const Products = props => {
   return (
     <Section>
       <div className="controls">
-        <Link to="/product/new">
-          <Button type="button">Add Product</Button>
-        </Link>
+        <Button to="/product/new">Add Product</Button>
       </div>
 
       {/* list of existing products */}
@@ -126,9 +123,9 @@ const Products = props => {
                     )}
                   </div>
                   <div className="controls">
-                    <Link to={`/product/edit/${id}`}>
-                      <Button className="control">Edit</Button>
-                    </Link>
+                    <Button className="control" to={`/product/edit/${id}`}>
+                      Edit
+                    </Button>
                     <Button
                       className="control"
                       buttonStyle="danger"

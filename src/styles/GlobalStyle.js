@@ -71,6 +71,7 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .button,
   button {
     appearance: none;
     background-color: ${props => props.theme.contentBg};
