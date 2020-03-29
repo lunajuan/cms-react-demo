@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Main = styled.main`
   background-color: ${props => props.theme.contentBg};
   box-shadow: ${props => props.theme.boxShadow.default};
-  padding: ${props => props.theme.spacing['4']};
+  padding: ${props => props.theme.spacing['5']};
   min-height: 100%;
 
   .heading {
