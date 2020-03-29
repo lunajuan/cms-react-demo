@@ -6,6 +6,7 @@ const Main = styled.main`
   box-shadow: ${props => props.theme.boxShadow.default};
   padding: ${props => props.theme.spacing['5']};
   min-height: 100%;
+  transition: background-color 200ms ease;
 
   .heading {
     text-align: center;

@@ -11,6 +11,7 @@ const Background = styled.div`
   padding: ${props => props.theme.spacing['4']};
   padding-bottom: 0;
   overflow: scroll;
+  transition: background-color 200ms ease;
 `;
 
 export default Background;
