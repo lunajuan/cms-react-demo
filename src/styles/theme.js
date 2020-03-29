@@ -59,8 +59,8 @@ export const lightTheme = {
   },
   text: {
     primary: colors.grey_900,
-    secondary: colors.grey_800,
-    muted: colors.grey_600,
+    secondary: colors.grey_600,
+    muted: colors.grey_400,
     danger: colors.red_400,
   },
   border: {
@@ -89,8 +89,8 @@ export const darkTheme = {
   },
   text: {
     primary: colors.grey_100,
-    secondary: colors.grey_200,
-    muted: colors.grey_400,
+    secondary: colors.grey_400,
+    muted: colors.grey_600,
     danger: colors.red_400,
   },
   border: {
