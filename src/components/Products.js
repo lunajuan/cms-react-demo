@@ -6,21 +6,14 @@ import { stateToHTML } from 'draft-js-export-html';
 import useCustomEditorStyles from '../hooks/useCustomEditorStyles';
 import Button from './Button';
 
-const parseContentState = (contentState, customInlineStyles) => {
+const parseRichText = (content, inlineStyles) => {
+  const contentState = content.blocks ? convertFromRaw(content) : content;
+
   const options = {
-    inlineStyles: customInlineStyles.reduce((map, { styleName, style }) => {
-      const updatedMap = map;
-      updatedMap[styleName] = { style };
-      return updatedMap;
-    }, {}),
+    inlineStyles,
   };
   return stateToHTML(contentState, options);
 };
-
-const parseRichText = (content, customInlineStyles) =>
-  content.blocks
-    ? parseContentState(convertFromRaw(content), customInlineStyles)
-    : parseContentState(content, customInlineStyles);
 
 const Section = styled.div`
   .controls {
@@ -82,7 +75,10 @@ const Item = styled.li`
 
 const Products = props => {
   const { products, removeProduct } = props;
-  const { textColorStyles } = useCustomEditorStyles();
+  const { textColorStyles, getCustomSyleMapInstructions } = useCustomEditorStyles();
+  const inlineStyles = getCustomSyleMapInstructions(cssProps => ({ style: cssProps }))(
+    textColorStyles
+  );
 
   const hasProducts = products && products.length > 0;
 
@@ -119,7 +115,7 @@ const Products = props => {
                         //   here or before saving the data.
                         //   eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={{
-                          __html: parseRichText(description, textColorStyles),
+                          __html: parseRichText(description, inlineStyles),
                         }}
                       />
                     )}

@@ -98,20 +98,6 @@ const blockStyles = [
   },
 ];
 
-/**
- * Get map of custom styles to register with draft. We'll need some custom
- * styles to register with draft. In my case I only need colors so we'll use the
- * colorStyles to build the custom.
- * https://draftjs.org/docs/advanced-topics-inline-styles#mapping-a-style-string-to-css
- * @param {Array} styles
- */
-const getCustomStyleMap = styles =>
-  styles.reduce((map, { styleName, style }) => {
-    const updatedMap = map;
-    updatedMap[styleName] = style;
-    return updatedMap;
-  }, {});
-
 const editorContentLength = draftEditorState =>
   draftEditorState.getCurrentContent().getPlainText().length;
 
@@ -189,7 +175,8 @@ const RichTextArea = props => {
     setFieldEl,
   } = props;
   const [isFocused, setFocus] = useState(false);
-  const { textColorStyles } = useCustomEditorStyles();
+  const { textColorStyles, getCustomSyleMapInstructions } = useCustomEditorStyles();
+  const getCustomStyleMap = getCustomSyleMapInstructions(cssProps => cssProps);
 
   const initialCharsRemaining = editorContentLength(editorState);
   const [remainingChars, setRemainingChars] = useState(charsLimit - initialCharsRemaining);

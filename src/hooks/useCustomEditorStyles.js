@@ -18,6 +18,14 @@ export const colorStyles = [
   { label: 'Grey 100', styleName: 'grey_100', style: { color: colors.grey_100 } },
 ];
 
+const getCustomSyleMapInstructions = getStyleValue => styles =>
+  styles.reduce((customMap, style) => {
+    const { styleName, style: cssStyles } = style;
+    const updatedMap = customMap;
+    updatedMap[styleName] = getStyleValue(cssStyles);
+    return updatedMap;
+  }, {});
+
 const useCustomEditorStyles = () => {
   const { text: textThemeProps } = useContext(ThemeContext);
   const textColorStyles = Object.entries(textThemeProps).reduce(
@@ -29,7 +37,7 @@ const useCustomEditorStyles = () => {
     []
   );
 
-  return { textColorStyles: [...textColorStyles, ...colorStyles] };
+  return { textColorStyles: [...textColorStyles, ...colorStyles], getCustomSyleMapInstructions };
 };
 
 export default useCustomEditorStyles;
