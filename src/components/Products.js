@@ -53,7 +53,8 @@ const Item = styled.li`
   grid-gap: ${props => props.theme.spacing['4']};
   box-shadow: ${props => props.theme.boxShadow.default};
   padding: ${props => props.theme.spacing['4']};
-  margin: ${props => props.theme.spacing['4']} 0;
+  margin: ${props => props.theme.spacing['8']} 0;
+  border: 1px solid ${props => props.theme.border.light};
 
   @media (min-width: 700px) {
     grid-row-gap: 0;
