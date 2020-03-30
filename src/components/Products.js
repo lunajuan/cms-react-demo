@@ -56,7 +56,8 @@ const Item = styled.li`
   margin: ${props => props.theme.spacing['4']} 0;
 
   @media (min-width: 700px) {
-    grid-gap: ${props => props.theme.spacing['8']};
+    grid-row-gap: 0;
+    grid-column-gap: ${props => props.theme.spacing['8']};
 
     grid-template-areas:
       'image title'
