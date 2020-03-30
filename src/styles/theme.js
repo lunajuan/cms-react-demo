@@ -70,10 +70,10 @@ export const lightTheme = {
   },
   link: colors.indigo_300,
   buttonStyles: {
-    primary: { fg: colors.cyan_600, bg: colors.grey_050 },
-    secondary: { fg: colors.indigo_500, bg: colors.grey_050 },
-    muted: { fg: colors.grey_500, bg: colors.grey_050 },
-    danger: { fg: colors.red_500, bg: colors.grey_050 },
+    primary: { fg: colors.cyan_600, bg: 'white' },
+    secondary: { fg: colors.indigo_500, bg: 'white' },
+    muted: { fg: colors.grey_500, bg: 'white' },
+    danger: { fg: colors.red_500, bg: 'white' },
   },
 };
 
