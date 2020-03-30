@@ -1,31 +1,56 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable camelcase */
-import styled from 'styled-components';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import propTypes from 'prop-types';
 
-const getColor = props => {
-  const {
-    colors: { indigo_500, red_500 },
-  } = props.theme;
-  const { danger } = props;
+const createColorGetter = colorType => props =>
+  props.theme.buttonStyles[props.buttonStyle][colorType];
 
-  if (danger) return red_500;
-  return indigo_500;
-};
+const getForegroundColor = createColorGetter('fg');
+const getBackgroundColor = createColorGetter('bg');
 
-const Button = styled.button`
-  appearance: none;
-  color: ${getColor};
-  border: 1px solid ${getColor};
+const buttonStyles = css`
+  color: ${props => getForegroundColor(props)};
+  border: 1px solid ${props => getForegroundColor(props)};
   padding: ${props => props.theme.spacing['1']} ${props => props.theme.spacing['2']};
-  font-size: ${props => props.theme.fontSize.lg};
-  border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-  }
+  background-color: ${props => getBackgroundColor(props)};
+`;
 
-  &:focus {
-    outline: none;
-    box-shadow: ${props => props.theme.boxShadow.outline};
+const StyledButton = styled.button`
+  ${buttonStyles}
+`;
+
+const StyledLink = styled.div`
+  display: inline-block;
+
+  a {
+    ${buttonStyles}
   }
 `;
+
+const Button = props => {
+  const { to, children, className, buttonStyle } = props;
+  if (to) {
+    return (
+      <StyledLink buttonStyle={buttonStyle}>
+        <Link to={to} className={`button${className ? ` ${className}` : ''}`}>
+          {children}
+        </Link>
+      </StyledLink>
+    );
+  }
+
+  return <StyledButton {...props}>{children}</StyledButton>;
+};
+
+Button.defaultProps = {
+  buttonStyle: 'primary',
+};
+
+Button.propTypes = {
+  buttonStyle: propTypes.oneOf(['primary', 'secondary', 'muted', 'danger']),
+};
 
 export default Button;

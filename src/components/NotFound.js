@@ -7,7 +7,7 @@ const Text = styled.div`
   margin: ${props => props.theme.spacing['8']};
   text-transform: uppercase;
   font-weight: ${props => props.theme.fontWeight.bold};
-  color: ${props => props.theme.colors.grey_400};
+  color: ${props => props.theme.text.muted};
 `;
 
 const NotFound = () => {

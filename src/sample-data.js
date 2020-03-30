@@ -12,9 +12,9 @@ export default [
           depth: 0,
           inlineStyleRanges: [
             { offset: 23, length: 9, style: 'ITALIC' },
-            { offset: 59, length: 40, style: 'grey_600' },
+            { offset: 59, length: 40, style: 'muted' },
             { offset: 60, length: 47, style: 'BOLD' },
-            { offset: 99, length: 8, style: 'red_500' },
+            { offset: 99, length: 8, style: 'danger' },
             { offset: 99, length: 8, style: 'UNDERLINE' },
           ],
           entityRanges: [],
@@ -74,7 +74,7 @@ export default [
           depth: 0,
           inlineStyleRanges: [
             { offset: 0, length: 57, style: 'BOLD' },
-            { offset: 0, length: 57, style: 'grey_500' },
+            { offset: 0, length: 57, style: 'muted' },
             { offset: 0, length: 57, style: 'ITALIC' },
           ],
           entityRanges: [],
@@ -88,7 +88,7 @@ export default [
           inlineStyleRanges: [
             { offset: 21, length: 9, style: 'ITALIC' },
             { offset: 21, length: 9, style: 'BOLD' },
-            { offset: 21, length: 9, style: 'grey_400' },
+            { offset: 21, length: 9, style: 'muted' },
             { offset: 21, length: 9, style: 'UNDERLINE' },
           ],
           entityRanges: [],
@@ -100,7 +100,7 @@ export default [
           type: 'unordered-list-item',
           depth: 0,
           inlineStyleRanges: [
-            { offset: 0, length: 70, style: 'indigo_500' },
+            { offset: 0, length: 70, style: 'secondary' },
             { offset: 0, length: 70, style: 'BOLD' },
           ],
           entityRanges: [],
