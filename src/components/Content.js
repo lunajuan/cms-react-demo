@@ -21,8 +21,6 @@ const Main = styled.main`
 `;
 
 const Header = styled.header`
-  position: relative;
-  border-bottom: 1px solid ${props => props.theme.border.default};
   margin-bottom: ${props => props.theme.spacing['8']};
 `;
 
