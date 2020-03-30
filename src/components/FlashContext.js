@@ -41,27 +41,22 @@ const Flash = styled.div`
   .flash-container {
     pointer-events: auto;
     display: inline-block;
-    background-color: rgba(255, 255, 255, 0.9);
+    background: ${props => props.theme.contentBg};
     border: 1px solid ${props => props.theme.border.default};
     border-radius: 5px;
     padding: ${props => props.theme.spacing['2']};
     margin: ${props => props.theme.spacing['1']} 0;
   }
 
-  .flash-undo {
-    margin: 0 ${props => props.theme.spacing['1']};
-  }
-`;
+  .flash-button {
+    padding: ${props => props.theme.spacing['1']} ${props => props.theme.spacing['2']};
+    font-size: ${props => props.theme.fontSize.sm};
+    border-radius: ${props => props.theme.radius.full};
+    margin-left: ${props => props.theme.spacing['3']};
 
-const CloseButton = styled.button`
-  appearance: none;
-  padding: ${props => props.theme.spacing['1']} ${props => props.theme.spacing['2']};
-  font-size: ${props => props.theme.fontSize.sm};
-  border-radius: ${props => props.theme.radius.full};
-  margin-left: ${props => props.theme.spacing['3']};
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -107,7 +102,7 @@ export const FlashProvider = props => {
               {flash.message}
               {flash.undo ? (
                 <Button
-                  className="flash-undo"
+                  className="flash-button"
                   onClick={() => {
                     flash.undo();
                     setShowFlash(false);
@@ -116,13 +111,15 @@ export const FlashProvider = props => {
                   Undo
                 </Button>
               ) : null}
-              <CloseButton
+              <Button
+                className="flash-button"
+                buttonStyle="muted"
                 onClick={() => {
                   setShowFlash(false);
                 }}
               >
                 close
-              </CloseButton>
+              </Button>
             </span>
           </Flash>
         </CSSTransition>
