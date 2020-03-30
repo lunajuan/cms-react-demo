@@ -42,7 +42,7 @@ const Flash = styled.div`
     pointer-events: auto;
     display: inline-block;
     background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid ${props => props.theme.colors.grey_500};
+    border: 1px solid ${props => props.theme.border.default};
     border-radius: 5px;
     padding: ${props => props.theme.spacing['2']};
     margin: ${props => props.theme.spacing['1']} 0;

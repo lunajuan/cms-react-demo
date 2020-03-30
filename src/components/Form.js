@@ -25,29 +25,6 @@ const createEditorStateFromContent = content => {
 };
 
 const FormContainer = styled.form`
-  input,
-  textarea {
-    appearance: none;
-    border: 1px solid ${props => props.theme.colors.grey_100};
-    border-radius: 5px;
-    padding: 0;
-    line-height: inherit;
-    color: inherit;
-    display: block;
-    width: 100%;
-    padding: ${props => props.theme.spacing['2']} ${props => props.theme.spacing['3']};
-
-    &:focus {
-      outline: none;
-      box-shadow: ${props => props.theme.boxShadow.outline};
-    }
-
-    &.is-invalid {
-      border-width: 1px;
-      border-color: ${props => props.theme.colors.red_400};
-    }
-  }
-
   .image-preview {
     margin: ${props => props.theme.spacing['6']} 0;
     display: block;
@@ -62,7 +39,7 @@ const FormContainer = styled.form`
 
   .field-label {
     display: block;
-    color: ${props => props.theme.colors.grey_600};
+    color: ${props => props.theme.text.muted};
     margin: ${props => props.theme.spacing['3']} 0;
   }
 
@@ -108,7 +85,7 @@ const FormContainer = styled.form`
       &::after {
         content: '✓';
         color: white;
-        background-color: ${props => props.theme.colors.cyan_500};
+        background-color: ${props => props.theme.background.success};
         border-radius: ${props => props.theme.radius.full};
         width: 10px;
         height: 10px;
@@ -127,7 +104,7 @@ const FormContainer = styled.form`
 
 const Error = styled.span`
   margin: ${props => props.theme.spacing['2']};
-  color: ${props => props.theme.colors.red_400};
+  color: ${props => props.theme.text.danger};
 `;
 
 const ProductSchema = Yup.object().shape({

@@ -5,7 +5,7 @@ import PinkHighlighter from '../styles/PinkHighlighter';
 const Counter = styled.div`
   display: flex;
   justify-content: flex-end;
-  color: ${props => props.theme.colors.grey_800};
+  color: ${props => props.theme.text.secondary};
   font-size: ${props => props.theme.fontSize.sm};
   margin: ${props => props.theme.spacing['2']} 0;
 
