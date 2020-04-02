@@ -1,14 +1,29 @@
 // https://css-tricks.com/a-dark-mode-toggle-with-react-and-themeprovider/#article-header-id-4
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+
+const checkLocalStorageAvailability = () => {
+  try {
+    const test = 'test';
+    window.localStorage.setItem(test, test);
+    window.localStorage.removeItem(test);
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 const useDarkMode = () => {
   const [theme, setTheme] = useState('light');
   const [isThemeSet, setIsThemeSet] = useState(false);
+  const isLocalStorageAvailable = checkLocalStorageAvailability();
 
-  const setMode = mode => {
-    window.localStorage.setItem('theme', mode);
-    setTheme(mode);
-  };
+  const setMode = useCallback(
+    mode => {
+      if (isLocalStorageAvailable) window.localStorage.setItem('theme', mode);
+      setTheme(mode);
+    },
+    [isLocalStorageAvailable]
+  );
 
   const toggleTheme = () => {
     if (theme === 'light') {
@@ -19,7 +34,7 @@ const useDarkMode = () => {
   };
 
   useEffect(() => {
-    const localTheme = window.localStorage.getItem('theme');
+    const localTheme = isLocalStorageAvailable ? window.localStorage.getItem('theme') : null;
 
     if (
       window.matchMedia &&
@@ -34,7 +49,7 @@ const useDarkMode = () => {
     }
 
     setIsThemeSet(true);
-  }, []);
+  }, [isLocalStorageAvailable, setMode]);
 
   return [theme, toggleTheme, isThemeSet];
 };
