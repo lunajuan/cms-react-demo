@@ -24,6 +24,7 @@
     "react-hooks"
   ],
   "rules": {
+    "react/prop-types": "off",
     "react/jsx-filename-extension": [
       1,
       {
@@ -33,6 +34,8 @@
         ]
       }
     ],
+    "camelcase": "warn",
+    "no-shadow": "warn",
     "no-console": "warn",
     "no-unused-vars": [
       "warn",
