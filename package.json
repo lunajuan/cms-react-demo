@@ -31,9 +31,6 @@
     "test": "craco test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": "wesbos"
-  },
   "browserslist": {
     "production": [
       ">0.2%",

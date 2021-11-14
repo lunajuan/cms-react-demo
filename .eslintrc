@@ -1,6 +1,6 @@
 {
   "extends": [
-    "wesbos"
+    "wesbos/typescript"
   ],
   "rules": {
     "prettier/prettier": [
@@ -10,17 +10,6 @@
         "singleQuote": true,
         "trailingComma": "es5"
       }
-    ],
-    "camelcase": "warn",
-    "no-shadow": "warn",
-    "arrow-body-style": "warn",
-    "no-use-before-define": [
-      "error",
-      {
-        "functions": false
-      }
-    ],
-    "no-nested-ternary": 0,
-    "react/prop-types": 1
+    ]
   }
 }
