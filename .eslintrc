@@ -10,6 +10,15 @@
         "singleQuote": true,
         "trailingComma": "es5"
       }
-    ]
+    ],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      {
+        "functions": false
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   }
 }
