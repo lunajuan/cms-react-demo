@@ -1,7 +1,6 @@
-// https://css-tricks.com/a-dark-mode-toggle-with-react-and-themeprovider/#article-header-id-4
 import { useEffect, useState } from 'react'
 
-type Mode = 'light' | 'dark'
+export type Mode = 'light' | 'dark'
 const THEME = 'theme'
 
 const useDarkMode = () => {

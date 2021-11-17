@@ -4,9 +4,9 @@ import './index.css'
 import { ThemeProvider } from 'styled-components'
 import useDarkMode from './hooks/useDarkMode'
 import { lightTheme, darkTheme } from './styles/theme'
-import ThemeToggle from './components/ThemeToggle'
+import ThemeButton from './components/ThemeButton'
 import GlobalStyle from './styles/GlobalStyle'
-import Background from './styles/Background'
+import Background from './layout/Background'
 import Container from './styles/Container'
 import { FlashProvider } from './components/FlashContext'
 import Content from './components/Content'
@@ -26,7 +26,11 @@ const App = () => {
       <FlashProvider>
         <Background>
           <Container>
-            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+            <ThemeButton
+              theme={theme}
+              toggleTheme={toggleTheme}
+              className="mb-8"
+            />
             <Content>
               <ProductRoutes />
             </Content>
