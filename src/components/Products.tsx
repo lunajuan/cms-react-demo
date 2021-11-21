@@ -1,19 +1,12 @@
-/* eslint-disable camelcase */
-import React from 'react';
-import styled from 'styled-components';
-import { convertFromRaw } from 'draft-js';
-import { stateToHTML } from 'draft-js-export-html';
-import useCustomEditorStyles from '../hooks/useCustomEditorStyles';
-import Button from './Button';
-
-const parseRichText = (content, inlineStyles) => {
-  const contentState = content.blocks ? convertFromRaw(content) : content;
-
-  const options = {
-    inlineStyles,
-  };
-  return stateToHTML(contentState, options);
-};
+/* eslint-disable */
+import React from 'react'
+import styled from 'styled-components'
+// import { convertFromRaw } from 'draft-js';
+// import { stateToHTML } from 'draft-js-export-html';
+import { parseRichText } from '../textEditor/util'
+import useCustomEditorStyles from '../hooks/useCustomEditorStyles'
+import Button from './Button'
+import { useProducts } from './ProductsProvider'
 
 const ProductsSection = styled.section`
   .section-header {
@@ -36,12 +29,12 @@ const ProductsSection = styled.section`
   .message {
     text-align: center;
   }
-`;
+`
 
 const List = styled.ul`
   padding: 0;
   list-style-type: none;
-`;
+`
 
 const Item = styled.li`
   display: grid;
@@ -50,15 +43,15 @@ const Item = styled.li`
     'image title'
     'image controls'
     'description description';
-  grid-gap: ${props => props.theme.spacing['4']};
-  box-shadow: ${props => props.theme.boxShadow.default};
-  padding: ${props => props.theme.spacing['4']};
-  margin: ${props => props.theme.spacing['8']} 0;
-  border: 1px solid ${props => props.theme.border.light};
+  grid-gap: ${(props) => props.theme.spacing['4']};
+  box-shadow: ${(props) => props.theme.boxShadow.default};
+  padding: ${(props) => props.theme.spacing['4']};
+  margin: ${(props) => props.theme.spacing['8']} 0;
+  border: 1px solid ${(props) => props.theme.border.light};
 
   @media (min-width: 700px) {
     grid-row-gap: 0;
-    grid-column-gap: ${props => props.theme.spacing['8']};
+    grid-column-gap: ${(props) => props.theme.spacing['8']};
 
     grid-template-areas:
       'image title'
@@ -67,7 +60,7 @@ const Item = styled.li`
   }
 
   h3 {
-    margin: 0 0 ${props => props.theme.spacing['2']};
+    margin: 0 0 ${(props) => props.theme.spacing['2']};
   }
 
   p {
@@ -80,7 +73,7 @@ const Item = styled.li`
 
   .image {
     display: block;
-    background-color: ${props => props.theme.muted};
+    background-color: ${(props) => props.theme.muted};
     width: 150px;
     height: 150px;
   }
@@ -89,7 +82,7 @@ const Item = styled.li`
     grid-area: title;
     display: flex;
     align-items: flex-end;
-    font-size: ${props => props.theme.fontSize['2xl']};
+    font-size: ${(props) => props.theme.fontSize['2xl']};
 
     @media (min-width: 700px) {
       display: block;
@@ -112,26 +105,29 @@ const Item = styled.li`
   }
 
   .control {
-    border-radius: ${props => props.theme.radius.full};
-    font-size: ${props => props.theme.fontSize.sm};
-    margin: 0 ${props => props.theme.spacing['1']};
+    border-radius: ${(props) => props.theme.radius.full};
+    font-size: ${(props) => props.theme.fontSize.sm};
+    margin: 0 ${(props) => props.theme.spacing['1']};
   }
-`;
+`
 
-const Products = props => {
-  const { products, removeProduct } = props;
-  const { textColorStyles, getCustomSyleMapInstructions } = useCustomEditorStyles();
-  const inlineStyles = getCustomSyleMapInstructions(cssProps => ({ style: cssProps }))(
-    textColorStyles
-  );
+function Products() {
+  const { products, removeProduct } = useProducts()
+  const { textColorStyles, getCustomSyleMapInstructions } =
+    useCustomEditorStyles()
+  //@ts-ignore
+  const inlineStyles = getCustomSyleMapInstructions((cssProps) => ({
+    style: cssProps,
+  }))(textColorStyles)
 
-  const hasProducts = products && products.length > 0;
+  const hasProducts = products && products.length > 0
 
   return (
     <ProductsSection>
       <header className="section-header">
         <h2 className="heading">All Products</h2>
         <div className="controls">
+          {/* @ts-ignore */}
           <Button to="/product/new">
             <b>+</b> Add Product
           </Button>
@@ -140,14 +136,17 @@ const Products = props => {
 
       {hasProducts ? (
         <List>
-          {products.map(product => {
-            const { id, title, description, image_url } = product;
+          {products.map((product) => {
+            const { id, title, description, image_url } = product
             return (
               <Item key={id}>
                 <div className="image-container">
                   <img
                     className="image"
-                    src={image_url || 'https://source.unsplash.com/gJylsVMSf-k/150x150'}
+                    src={
+                      image_url ||
+                      'https://source.unsplash.com/gJylsVMSf-k/150x150'
+                    }
                     alt=""
                   />
                 </div>
@@ -166,9 +165,15 @@ const Products = props => {
                   />
                 )}
                 <div className="controls">
-                  <Button className="control" to={`/product/edit/${id}`} buttonStyle="muted">
+                  {/* @ts-ignore */}
+                  <Button
+                    className="control"
+                    to={`/product/edit/${id}`}
+                    buttonStyle="muted"
+                  >
                     Edit
                   </Button>
+                  {/* @ts-ignore */}
                   <Button
                     className="control"
                     buttonStyle="danger"
@@ -178,7 +183,7 @@ const Products = props => {
                   </Button>
                 </div>
               </Item>
-            );
+            )
           })}
         </List>
       ) : (
@@ -189,7 +194,7 @@ const Products = props => {
         </div>
       )}
     </ProductsSection>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products
