@@ -15,7 +15,9 @@ type NotificationValue = {
   addNotification: (notification: Notification) => void
 }
 
-const NotificationContext = createContext<NotificationValue | void>(undefined)
+const NotificationContext = createContext<NotificationValue>({
+  addNotification: () => undefined,
+})
 NotificationContext.displayName = 'NotificationContext'
 
 function NotificationProvider({ children }: { children: ReactNode }) {
@@ -68,6 +70,8 @@ export default NotificationProvider
 
 export function useNotifications() {
   const context = useContext(NotificationContext)
+  if (!context)
+    throw new Error('useNotifications must be within <NotificationsProvider />')
   return context
 }
 

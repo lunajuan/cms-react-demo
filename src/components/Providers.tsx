@@ -4,6 +4,7 @@ import NotificationProvider from './NoficationsContext'
 import GlobalStyle from '../styles/GlobalStyle'
 import { lightTheme, darkTheme } from '../styles/theme'
 import { Mode } from '../hooks/useDarkMode'
+import ProductsProvider from './ProductsProvider'
 
 type Props = {
   themeMode: Mode
@@ -16,7 +17,9 @@ function Providers({ children, themeMode }: PropsWithChildren<Props>) {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <NotificationProvider>{children}</NotificationProvider>
+      <NotificationProvider>
+        <ProductsProvider>{children}</ProductsProvider>
+      </NotificationProvider>
     </ThemeProvider>
   )
 }
