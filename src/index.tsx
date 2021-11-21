@@ -25,9 +25,7 @@ const App = () => {
             toggleTheme={toggleTheme}
             className="mb-8"
           />
-          <Content>
-            <ProductRoutes />
-          </Content>
+          <Content>{/* <ProductRoutes /> */}</Content>
         </Container>
       </Background>
     </Providers>

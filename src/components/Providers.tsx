@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { ThemeProvider } from 'styled-components'
-import { FlashProvider } from './FlashContext'
+import NotificationProvider from './NoficationsContext'
 import GlobalStyle from '../styles/GlobalStyle'
 import { lightTheme, darkTheme } from '../styles/theme'
 import { Mode } from '../hooks/useDarkMode'
@@ -16,7 +16,7 @@ function Providers({ children, themeMode }: PropsWithChildren<Props>) {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <FlashProvider>{children}</FlashProvider>
+      <NotificationProvider>{children}</NotificationProvider>
     </ThemeProvider>
   )
 }
