@@ -1,6 +1,6 @@
 /**
- * Basic undo primarily used for undoing a adding and removing from a list of
- * things in csm. NOT for undoing in text editor.
+ * Basic undo used for reverting adding records like a product. This is NOT used
+ * for undoing things in the text editor.
  */
 import React, { useState, useCallback } from 'react'
 
